@@ -73,9 +73,9 @@ public class ReviewServiceApplicationTests {
   public void deleteReviews() {
 
     int productId = 1;
-    int recommendationId = 1;
+    int reviewId = 1;
 
-    postAndVerifyReview(productId, recommendationId, OK);
+    postAndVerifyReview(productId, reviewId, OK);
     assertEquals(1, repository.findByProductId(productId).size());
 
     deleteAndVerifyReviewsByProductId(productId, OK);

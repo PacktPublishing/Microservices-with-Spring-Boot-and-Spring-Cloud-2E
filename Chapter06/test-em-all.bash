@@ -83,7 +83,7 @@ function recreateComposite() {
   local composite=$2
 
   assertCurl 200 "curl -X DELETE http://$HOST:$PORT/product-composite/${productId} -s"
-  curl -X POST -k http://$HOST:$PORT/product-composite -H "Content-Type: application/json" --data "$composite"
+  curl -X POST http://$HOST:$PORT/product-composite -H "Content-Type: application/json" --data "$composite"
 }
 
 function setupTestdata() {
