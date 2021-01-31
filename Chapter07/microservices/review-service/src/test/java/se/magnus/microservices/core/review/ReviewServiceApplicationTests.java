@@ -34,7 +34,7 @@ public class ReviewServiceApplicationTests {
 
   @Autowired
   @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Review>> messageProcessor = null;
+  private Consumer<Event<Integer, Review>> messageProcessor;
 
   @BeforeEach
   public void setupDb() {

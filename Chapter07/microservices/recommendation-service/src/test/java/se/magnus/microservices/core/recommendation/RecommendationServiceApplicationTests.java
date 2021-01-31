@@ -31,7 +31,7 @@ public class RecommendationServiceApplicationTests {
 
   @Autowired
   @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Recommendation>> messageProcessor = null;
+  private Consumer<Event<Integer, Recommendation>> messageProcessor;
 
   @BeforeEach
   public void setupDb() {

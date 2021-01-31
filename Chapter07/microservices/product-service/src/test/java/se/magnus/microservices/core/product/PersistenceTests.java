@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.test.context.junit4.SpringRunner;
 import reactor.test.StepVerifier;
 import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.persistence.ProductRepository;

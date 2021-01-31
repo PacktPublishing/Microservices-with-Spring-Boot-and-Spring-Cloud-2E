@@ -13,12 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.http.HttpStatus;
-import org.springframework.integration.channel.AbstractMessageChannel;
-import org.springframework.messaging.MessagingException;
-import org.springframework.messaging.support.GenericMessage;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.event.Event;
@@ -36,7 +31,7 @@ public class ProductServiceApplicationTests {
 
   @Autowired
   @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Product>> messageProcessor = null;
+  private Consumer<Event<Integer, Product>> messageProcessor;
 
   @BeforeEach
   public void setupDb() {

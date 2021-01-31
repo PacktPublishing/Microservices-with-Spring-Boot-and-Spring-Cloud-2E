@@ -62,7 +62,7 @@ public class ProductCompositeServiceApplication {
   ProductCompositeIntegration integration;
 
   @Bean
-  ReactiveHealthContributor healthcheckMicroservices() {
+  ReactiveHealthContributor coreServices() {
 
     final Map<String, ReactiveHealthIndicator> registry = new LinkedHashMap<>();
 
