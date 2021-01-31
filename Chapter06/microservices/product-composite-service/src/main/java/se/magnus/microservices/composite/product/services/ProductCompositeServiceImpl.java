@@ -92,7 +92,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     integration.deleteReviews(productId);
 
-    LOG.debug("getCompositeProduct: aggregate entities deleted for productId: {}", productId);
+    LOG.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
   }
 
   private ProductAggregate createProductAggregate(
