@@ -1,6 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.1'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 
@@ -8,7 +8,7 @@ group = 'se.magnus.microservices.composite.product'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 ext {
-    springCloudVersion = "2020.0.0"
+    springCloudVersion = "2020.0.1"
 }
 repositories {
     mavenCentral()
