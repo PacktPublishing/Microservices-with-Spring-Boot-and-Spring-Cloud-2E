@@ -1,12 +1,12 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
 }
 
 
 group = 'se.magnus.springcloud'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
