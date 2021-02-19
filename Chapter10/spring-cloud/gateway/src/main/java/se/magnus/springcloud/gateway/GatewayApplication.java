@@ -16,7 +16,7 @@ public class GatewayApplication {
   }
 
   @Bean
-  WebClient webClient(WebClient.Builder webClientBuilder) {
+  public WebClient webClient(WebClient.Builder webClientBuilder) {
     return webClientBuilder.build();
   }
 

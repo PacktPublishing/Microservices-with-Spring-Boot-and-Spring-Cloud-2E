@@ -14,10 +14,6 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
-ribbon.ServerListRefreshInterval: 5000
-
-ribbon.NFLoadBalancerPingInterval: 5
-
 spring.cloud.gateway.routes:
 
 - id: product-composite
@@ -82,6 +78,6 @@ logging:
     org.springframework.cloud.gateway: TRACE
 
 ---
-spring.profiles: docker
+spring.config.activate.on-profile: docker
 
 app.eureka-server: eureka
