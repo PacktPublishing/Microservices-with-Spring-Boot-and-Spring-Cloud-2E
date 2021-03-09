@@ -8,9 +8,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.RestController;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.recommendation.RecommendationService;
+import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
-import se.magnus.util.exceptions.InvalidInputException;
 import se.magnus.util.http.ServiceUtil;
 
 @RestController
