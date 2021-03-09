@@ -24,8 +24,8 @@ import se.magnus.api.core.recommendation.RecommendationService;
 import se.magnus.api.core.review.Review;
 import se.magnus.api.core.review.ReviewService;
 import se.magnus.api.event.Event;
-import se.magnus.util.exceptions.InvalidInputException;
-import se.magnus.util.exceptions.NotFoundException;
+import se.magnus.api.exceptions.InvalidInputException;
+import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.util.http.HttpErrorInfo;
 
 @Component

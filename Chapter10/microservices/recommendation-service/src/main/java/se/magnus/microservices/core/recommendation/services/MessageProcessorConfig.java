@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.recommendation.RecommendationService;
 import se.magnus.api.event.Event;
-import se.magnus.util.exceptions.EventProcessingException;
+import se.magnus.api.exceptions.EventProcessingException;
 
 @Configuration
 public class MessageProcessorConfig {
