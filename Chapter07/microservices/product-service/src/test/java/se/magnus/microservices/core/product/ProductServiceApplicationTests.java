@@ -17,8 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.event.Event;
+import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
-import se.magnus.util.exceptions.InvalidInputException;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0"})
 public class ProductServiceApplicationTests {

@@ -3,7 +3,7 @@ version: '2.1'
 services:
   product:
     build: microservices/product-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
@@ -14,7 +14,7 @@ services:
 
   product-p1:
     build: microservices/product-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
@@ -25,7 +25,7 @@ services:
 
   recommendation:
     build: microservices/recommendation-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
@@ -36,7 +36,7 @@ services:
 
   recommendation-p1:
     build: microservices/recommendation-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
@@ -47,7 +47,7 @@ services:
 
   review:
     build: microservices/review-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
@@ -58,7 +58,7 @@ services:
 
   review-p1:
     build: microservices/review-service
-    mem_limit: 350m
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
@@ -69,7 +69,7 @@ services:
 
   product-composite:
     build: microservices/product-composite-service
-    mem_limit: 350m
+    mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
@@ -80,7 +80,7 @@ services:
 
   mongodb:
     image: mongo:4.4.2
-    mem_limit: 350m
+    mem_limit: 512m
     ports:
       - "27017:27017"
     command: mongod
@@ -88,11 +88,11 @@ services:
       test: "mongo --eval 'db.stats().ok'"
       interval: 5s
       timeout: 2s
-      retries: 12
+      retries: 60
 
   mysql:
     image: mysql:5.7.32
-    mem_limit: 350m
+    mem_limit: 512m
     ports:
       - "3306:3306"
     environment:
@@ -104,11 +104,11 @@ services:
       test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
       interval: 5s
       timeout: 2s
-      retries: 12
+      retries: 60
 
   kafka:
     image: wurstmeister/kafka:2.12-2.5.0
-    mem_limit: 350m
+    mem_limit: 512m
     ports:
       - "9092:9092"
     environment:
@@ -120,7 +120,7 @@ services:
 
   zookeeper:
     image: wurstmeister/zookeeper:3.4.6
-    mem_limit: 350m
+    mem_limit: 512m
     ports:
       - "2181:2181"
     environment:

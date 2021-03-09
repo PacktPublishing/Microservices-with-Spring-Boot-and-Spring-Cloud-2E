@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.product.ProductService;
+import se.magnus.api.exceptions.InvalidInputException;
+import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
-import se.magnus.util.exceptions.InvalidInputException;
-import se.magnus.util.exceptions.NotFoundException;
 import se.magnus.util.http.ServiceUtil;
 
 @RestController
