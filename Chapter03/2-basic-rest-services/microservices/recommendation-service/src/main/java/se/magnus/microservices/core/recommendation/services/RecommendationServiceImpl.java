@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.recommendation.RecommendationService;
-import se.magnus.util.exceptions.InvalidInputException;
+import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.util.http.ServiceUtil;
 
 @RestController
