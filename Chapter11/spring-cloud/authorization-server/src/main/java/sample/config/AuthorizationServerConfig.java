@@ -20,6 +20,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import java.time.Duration;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +65,7 @@ public class AuthorizationServerConfig {
       .scope("product:read")
       .scope("product:write")
       .clientSettings(clientSettings -> clientSettings.requireUserConsent(true))
+      .tokenSettings(ts -> ts.accessTokenTimeToLive(Duration.ofHours(1)))
       .build();
 
     RegisteredClient readerClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -78,6 +80,7 @@ public class AuthorizationServerConfig {
       .scope(OidcScopes.OPENID)
       .scope("product:read")
       .clientSettings(clientSettings -> clientSettings.requireUserConsent(true))
+      .tokenSettings(ts -> ts.accessTokenTimeToLive(Duration.ofHours(1)))
       .build();
     return new InMemoryRegisteredClientRepository(writerClient, readerClient);
   }

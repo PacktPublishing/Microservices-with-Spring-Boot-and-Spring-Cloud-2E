@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.product.ProductService;
 import se.magnus.api.event.Event;
-import se.magnus.util.exceptions.EventProcessingException;
+import se.magnus.api.exceptions.EventProcessingException;
 
 @Configuration
 public class MessageProcessorConfig {

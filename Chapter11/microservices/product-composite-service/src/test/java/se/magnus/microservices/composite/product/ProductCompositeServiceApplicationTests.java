@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.review.Review;
+import se.magnus.api.exceptions.InvalidInputException;
+import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
-import se.magnus.util.exceptions.InvalidInputException;
-import se.magnus.util.exceptions.NotFoundException;
 
 @SpringBootTest(
   webEnvironment = RANDOM_PORT,
