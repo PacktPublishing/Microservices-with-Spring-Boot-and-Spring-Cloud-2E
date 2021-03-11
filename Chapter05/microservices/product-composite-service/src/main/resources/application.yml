@@ -10,7 +10,7 @@ api:
     version: 1.0.0
     title: Sample API
     description: Description of the API...
-    termsOfService: MINE TERMS OF SERVICE
+    termsOfService: MY TERMS OF SERVICE
     license: MY LICENSE
     licenseUrl: MY LICENSE URL
 
@@ -49,13 +49,13 @@ api:
         200 - Ok, but no reviews will be returned
 
         ## Non numerical product id
-        400 - A <b>Bad Request</b> error will be returned
+        400 - A **Bad Request** error will be returned
 
         ## Product id 13
-        404 - A <b>Not Found</b> error will be returned
+        404 - A **Not Found** error will be returned
 
         ## Negative product ids
-        422 - An <b>Unprocessable Entity</b> error will be returned
+        422 - An **Unprocessable Entity** error will be returned
 
 server.port: 7000
 server.error.include-message: always
