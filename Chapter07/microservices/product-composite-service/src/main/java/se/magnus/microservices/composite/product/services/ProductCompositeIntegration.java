@@ -182,7 +182,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         return new InvalidInputException(getErrorMessage(wcre));
 
       default:
-        LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", wcre.getStatusCode());
+        LOG.warn("Got an unexpected HTTP error: {}, will rethrow it", wcre.getStatusCode());
         LOG.warn("Error body: {}", wcre.getResponseBodyAsString());
         return ex;
     }
