@@ -21,7 +21,7 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0"})
-public class ProductServiceApplicationTests {
+class ProductServiceApplicationTests {
 
   @Autowired
   private WebTestClient client;
@@ -34,12 +34,12 @@ public class ProductServiceApplicationTests {
   private Consumer<Event<Integer, Product>> messageProcessor;
 
   @BeforeEach
-  public void setupDb() {
+  void setupDb() {
     repository.deleteAll().block();
   }
 
   @Test
-  public void getProductById() {
+  void getProductById() {
 
     int productId = 1;
 
@@ -56,7 +56,7 @@ public class ProductServiceApplicationTests {
   }
 
   @Test
-  public void duplicateError() {
+  void duplicateError() {
 
     int productId = 1;
 
@@ -74,7 +74,7 @@ public class ProductServiceApplicationTests {
   }
 
   @Test
-  public void deleteProduct() {
+  void deleteProduct() {
 
     int productId = 1;
 
@@ -88,7 +88,7 @@ public class ProductServiceApplicationTests {
   }
 
   @Test
-  public void getProductInvalidParameterString() {
+  void getProductInvalidParameterString() {
 
     getAndVerifyProduct("/no-integer", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/product/no-integer")
@@ -96,7 +96,7 @@ public class ProductServiceApplicationTests {
   }
 
   @Test
-  public void getProductNotFound() {
+  void getProductNotFound() {
 
     int productIdNotFound = 13;
     getAndVerifyProduct(productIdNotFound, NOT_FOUND)
@@ -105,7 +105,7 @@ public class ProductServiceApplicationTests {
   }
 
   @Test
-  public void getProductInvalidParameterNegativeValue() {
+  void getProductInvalidParameterNegativeValue() {
 
     int productIdInvalid = -1;
 

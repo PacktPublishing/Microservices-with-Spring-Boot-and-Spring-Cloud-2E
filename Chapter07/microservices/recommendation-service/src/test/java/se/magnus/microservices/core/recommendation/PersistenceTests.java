@@ -15,7 +15,7 @@ import se.magnus.microservices.core.recommendation.persistence.RecommendationEnt
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @DataMongoTest
-public class PersistenceTests {
+class PersistenceTests {
 
   @Autowired
   private RecommendationRepository repository;
@@ -23,7 +23,7 @@ public class PersistenceTests {
   private RecommendationEntity savedEntity;
 
   @BeforeEach
-  public void setupDb() {
+  void setupDb() {
     repository.deleteAll().block();
 
     RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
@@ -34,7 +34,7 @@ public class PersistenceTests {
 
 
   @Test
-  public void create() {
+  void create() {
 
     RecommendationEntity newEntity = new RecommendationEntity(1, 3, "a", 3, "c");
     repository.save(newEntity).block();
@@ -46,7 +46,7 @@ public class PersistenceTests {
   }
 
   @Test
-  public void update() {
+  void update() {
     savedEntity.setAuthor("a2");
     repository.save(savedEntity).block();
 
@@ -56,13 +56,13 @@ public class PersistenceTests {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     repository.delete(savedEntity).block();
     assertFalse(repository.existsById(savedEntity.getId()).block());
   }
 
   @Test
-  public void getByProductId() {
+  void getByProductId() {
     List<RecommendationEntity> entityList = repository.findByProductId(savedEntity.getProductId()).collectList().block();
 
     assertThat(entityList, hasSize(1));
@@ -70,7 +70,7 @@ public class PersistenceTests {
   }
 
   @Test
-  public void duplicateError() {
+  void duplicateError() {
     assertThrows(DuplicateKeyException.class, () -> {
       RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
       repository.save(entity).block();
@@ -78,7 +78,7 @@ public class PersistenceTests {
   }
 
   @Test
-  public void optimisticLockError() {
+  void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
     RecommendationEntity entity1 = repository.findById(savedEntity.getId()).block();
@@ -89,7 +89,7 @@ public class PersistenceTests {
     repository.save(entity1).block();
 
     //  Update the entity using the second entity object.
-    // This should fail since the second entity now holds a old version number, i.e. a Optimistic Lock Error
+    // This should fail since the second entity now holds an old version number, i.e. an Optimistic Lock Error
     assertThrows(OptimisticLockingFailureException.class, () -> {
       entity2.setAuthor("a2");
       repository.save(entity2).block();

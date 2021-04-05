@@ -1,6 +1,5 @@
 package se.magnus.microservices.core.review;
 
-import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +18,22 @@ public class ReviewServiceApplication {
 
   private static final Logger LOG = LoggerFactory.getLogger(ReviewServiceApplication.class);
 
-  private final Integer connectionPoolSize;
+  private final Integer threadPoolSize;
+  private final Integer taskQueueSize;
 
   @Autowired
   public ReviewServiceApplication(
-    @Value("${spring.datasource.maximum-pool-size:10}")
-    Integer connectionPoolSize
+    @Value("${app.threadPoolSize:10}") Integer threadPoolSize,
+    @Value("${app.taskQueueSize:100}") Integer taskQueueSize
   ) {
-    this.connectionPoolSize = connectionPoolSize;
+    this.threadPoolSize = threadPoolSize;
+    this.taskQueueSize = taskQueueSize;
   }
 
   @Bean
   public Scheduler jdbcScheduler() {
-    LOG.info("Creates a jdbcScheduler with connectionPoolSize = " + connectionPoolSize);
-    return Schedulers.fromExecutor(Executors.newFixedThreadPool(connectionPoolSize));
+    LOG.info("Creates a jdbcScheduler with thread pool size = {}", threadPoolSize);
+    return Schedulers.newBoundedElastic(threadPoolSize, taskQueueSize, "jdbc-pool");
   }
 
   public static void main(String[] args) {
