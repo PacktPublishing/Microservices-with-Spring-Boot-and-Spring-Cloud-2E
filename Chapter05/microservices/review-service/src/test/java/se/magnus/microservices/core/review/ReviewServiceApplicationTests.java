@@ -11,12 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class ReviewServiceApplicationTests {
+class ReviewServiceApplicationTests {
 
   @Autowired private WebTestClient client;
 
   @Test
-  public void getReviewsByProductId() {
+  void getReviewsByProductId() {
 
     int productId = 1;
 
@@ -32,7 +32,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsMissingParameter() {
+  void getReviewsMissingParameter() {
 
     client.get()
       .uri("/review")
@@ -46,7 +46,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsInvalidParameter() {
+  void getReviewsInvalidParameter() {
 
     client.get()
       .uri("/review?productId=no-integer")
@@ -60,7 +60,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsNotFound() {
+  void getReviewsNotFound() {
 
     int productIdNotFound = 213;
 
@@ -75,7 +75,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsInvalidParameterNegativeValue() {
+  void getReviewsInvalidParameterNegativeValue() {
 
     int productIdInvalid = -1;
 

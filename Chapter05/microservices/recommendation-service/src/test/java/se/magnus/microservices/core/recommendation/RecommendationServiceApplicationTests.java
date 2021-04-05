@@ -11,12 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class RecommendationServiceApplicationTests {
+class RecommendationServiceApplicationTests {
 
   @Autowired private WebTestClient client;
 
   @Test
-  public void getRecommendationsByProductId() {
+  void getRecommendationsByProductId() {
 
     int productId = 1;
 
@@ -32,7 +32,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsMissingParameter() {
+  void getRecommendationsMissingParameter() {
 
     client.get()
       .uri("/recommendation")
@@ -46,7 +46,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsInvalidParameter() {
+  void getRecommendationsInvalidParameter() {
 
     client.get()
       .uri("/recommendation?productId=no-integer")
@@ -60,7 +60,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsNotFound() {
+  void getRecommendationsNotFound() {
 
     int productIdNotFound = 113;
 
@@ -75,7 +75,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsInvalidParameterNegativeValue() {
+  void getRecommendationsInvalidParameterNegativeValue() {
 
     int productIdInvalid = -1;
 
