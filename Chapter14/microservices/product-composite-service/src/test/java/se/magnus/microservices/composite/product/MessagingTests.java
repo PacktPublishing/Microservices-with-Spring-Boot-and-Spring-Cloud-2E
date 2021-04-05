@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static reactor.core.publisher.Mono.just;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
@@ -40,9 +40,10 @@ import se.magnus.api.event.Event;
     "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
     "spring.main.allow-bean-definition-overriding=true",
     "eureka.client.enabled=false",
-    "spring.cloud.stream.defaultBinder=rabbit"})
+    "spring.cloud.stream.defaultBinder=rabbit",
+    "spring.cloud.config.enabled=false"})
 @Import({TestChannelBinderConfiguration.class})
-public class MessagingTests {
+class MessagingTests {
 
   private static final Logger LOG = LoggerFactory.getLogger(MessagingTests.class);
 
@@ -53,17 +54,17 @@ public class MessagingTests {
   private OutputDestination target;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     purgeMessages("products");
     purgeMessages("recommendations");
     purgeMessages("reviews");
   }
 
   @Test
-  public void createCompositeProduct1() {
+  void createCompositeProduct1() {
 
     ProductAggregate composite = new ProductAggregate(1, "name", 1, null, null, null);
-    postAndVerifyProduct(composite, OK);
+    postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
@@ -76,18 +77,18 @@ public class MessagingTests {
       new Event(CREATE, composite.getProductId(), new Product(composite.getProductId(), composite.getName(), composite.getWeight(), null));
     assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedEvent)));
 
-    // Assert none recommendation and review events
+    // Assert no recommendation and review events
     assertEquals(0, recommendationMessages.size());
     assertEquals(0, reviewMessages.size());
   }
 
   @Test
-  public void createCompositeProduct2() {
+  void createCompositeProduct2() {
 
     ProductAggregate composite = new ProductAggregate(1, "name", 1,
       singletonList(new RecommendationSummary(1, "a", 1, "c")),
       singletonList(new ReviewSummary(1, "a", "s", "c")), null);
-    postAndVerifyProduct(composite, OK);
+    postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
@@ -119,8 +120,8 @@ public class MessagingTests {
   }
 
   @Test
-  public void deleteCompositeProduct() {
-    deleteAndVerifyProduct(1, OK);
+  void deleteCompositeProduct() {
+    deleteAndVerifyProduct(1, ACCEPTED);
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
@@ -170,7 +171,9 @@ public class MessagingTests {
     try {
       return target.receive(0, bindingName);
     } catch (NullPointerException npe) {
-      LOG.trace("getMessage() received a NPE with binding = {}", bindingName);
+      // If the messageQueues member variable in the target object contains no queues when the receive method is called, it will cause a NPE to be thrown.
+      // So we catch the NPE here and return null to indicate that no messages were found.
+      LOG.error("getMessage() received a NPE with binding = {}", bindingName);
       return null;
     }
   }

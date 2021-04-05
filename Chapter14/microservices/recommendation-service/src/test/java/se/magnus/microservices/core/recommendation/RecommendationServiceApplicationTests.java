@@ -23,8 +23,9 @@ import se.magnus.microservices.core.recommendation.persistence.RecommendationRep
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
   "spring.data.mongodb.port: 0",
   "eureka.client.enabled=false",
-  "spring.sleuth.mongodb.enabled=false"})
-public class RecommendationServiceApplicationTests {
+  "spring.sleuth.mongodb.enabled=false",
+  "spring.cloud.config.enabled=false"})
+class RecommendationServiceApplicationTests {
 
   @Autowired
   private WebTestClient client;
@@ -37,12 +38,12 @@ public class RecommendationServiceApplicationTests {
   private Consumer<Event<Integer, Recommendation>> messageProcessor;
 
   @BeforeEach
-  public void setupDb() {
+  void setupDb() {
     repository.deleteAll().block();
   }
 
   @Test
-  public void getRecommendationsByProductId() {
+  void getRecommendationsByProductId() {
 
     int productId = 1;
 
@@ -59,7 +60,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void duplicateError() {
+  void duplicateError() {
 
     int productId = 1;
     int recommendationId = 1;
@@ -78,7 +79,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void deleteRecommendations() {
+  void deleteRecommendations() {
 
     int productId = 1;
     int recommendationId = 1;
@@ -93,7 +94,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsMissingParameter() {
+  void getRecommendationsMissingParameter() {
 
     getAndVerifyRecommendationsByProductId("", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/recommendation")
@@ -101,7 +102,7 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsInvalidParameter() {
+  void getRecommendationsInvalidParameter() {
 
     getAndVerifyRecommendationsByProductId("?productId=no-integer", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/recommendation")
@@ -109,14 +110,14 @@ public class RecommendationServiceApplicationTests {
   }
 
   @Test
-  public void getRecommendationsNotFound() {
+  void getRecommendationsNotFound() {
 
     getAndVerifyRecommendationsByProductId("?productId=113", OK)
       .jsonPath("$.length()").isEqualTo(0);
   }
 
   @Test
-  public void getRecommendationsInvalidParameterNegativeValue() {
+  void getRecommendationsInvalidParameterNegativeValue() {
 
     int productIdInvalid = -1;
 
