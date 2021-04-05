@@ -7,10 +7,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
-public class ReactorTests {
+class ReactorTests {
 
   @Test
-  public void testFlux() {
+  void testFlux() {
 
     List<Integer> list = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class ReactorTests {
   }
 
   @Test
-  public void testFluxBlocking() {
+  void testFluxBlocking() {
 
     List<Integer> list = Flux.just(1, 2, 3, 4)
       .filter(n -> n % 2 == 0)

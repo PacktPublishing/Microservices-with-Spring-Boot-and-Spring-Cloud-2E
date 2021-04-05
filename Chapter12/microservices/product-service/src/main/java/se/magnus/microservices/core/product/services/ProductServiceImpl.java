@@ -1,6 +1,6 @@
 package se.magnus.microservices.core.product.services;
 
-import static reactor.core.publisher.Mono.error;
+import static java.util.logging.Level.FINE;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
     ProductEntity entity = mapper.apiToEntity(body);
     Mono<Product> newEntity = repository.save(entity)
-      .log()
+      .log(LOG.getName(), FINE)
       .onErrorMap(
         DuplicateKeyException.class,
         ex -> new InvalidInputException("Duplicate key, Product Id: " + body.getProductId()))
@@ -59,9 +59,11 @@ public class ProductServiceImpl implements ProductService {
       throw new InvalidInputException("Invalid productId: " + productId);
     }
 
+    LOG.info("Will get product info for id={}", productId);
+
     return repository.findByProductId(productId)
-      .switchIfEmpty(error(new NotFoundException("No product found for productId: " + productId)))
-      .log()
+      .switchIfEmpty(Mono.error(new NotFoundException("No product found for productId: " + productId)))
+      .log(LOG.getName(), FINE)
       .map(e -> mapper.entityToApi(e))
       .map(e -> setServiceAddress(e));
   }
@@ -74,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     LOG.debug("deleteProduct: tries to delete an entity with productId: {}", productId);
-    return repository.findByProductId(productId).log().map(e -> repository.delete(e)).flatMap(e -> e);
+    return repository.findByProductId(productId).log(LOG.getName(), FINE).map(e -> repository.delete(e)).flatMap(e -> e);
   }
 
   private Product setServiceAddress(Product e) {

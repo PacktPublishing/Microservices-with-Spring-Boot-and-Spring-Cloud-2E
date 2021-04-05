@@ -1,6 +1,9 @@
 package se.magnus.microservices.composite.product.services;
 
+import static java.util.logging.Level.FINE;
+
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -37,37 +40,37 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
   @Override
   public Mono<Void> createProduct(ProductAggregate body) {
-    return ReactiveSecurityContextHolder.getContext().doOnSuccess(sc -> internalCreateCompositeProduct(sc, body)).then();
-  }
-
-  public Mono<Void> internalCreateCompositeProduct(SecurityContext sc, ProductAggregate body) {
 
     try {
 
-      logAuthorizationInfo(sc);
+      List<Mono> monoList = new ArrayList<>();
+
+      monoList.add(getLogAuthorizationInfoMono());
 
       LOG.debug("createCompositeProduct: creates a new composite entity for productId: {}", body.getProductId());
 
       Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
-      integration.createProduct(product);
+      monoList.add(integration.createProduct(product));
 
       if (body.getRecommendations() != null) {
         body.getRecommendations().forEach(r -> {
           Recommendation recommendation = new Recommendation(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
-          integration.createRecommendation(recommendation);
+          monoList.add(integration.createRecommendation(recommendation));
         });
       }
 
       if (body.getReviews() != null) {
         body.getReviews().forEach(r -> {
           Review review = new Review(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
-          integration.createReview(review);
+          monoList.add(integration.createReview(review));
         });
       }
 
       LOG.debug("createCompositeProduct: composite entities created for productId: {}", body.getProductId());
 
-      return Mono.empty();
+      return Mono.zip(r -> "", monoList.toArray(new Mono[0]))
+        .doOnError(ex -> LOG.warn("createCompositeProduct failed: {}", ex.toString()))
+        .then();
 
     } catch (RuntimeException re) {
       LOG.warn("createCompositeProduct failed: {}", re.toString());
@@ -77,35 +80,32 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
   @Override
   public Mono<ProductAggregate> getProduct(int productId) {
+
+    LOG.info("Will get composite product info for product.id={}", productId);
     return Mono.zip(
       values -> createProductAggregate(
-                  (SecurityContext) values[0], (Product) values[1], (List<Recommendation>) values[2], (List<Review>) values[3], serviceUtil.getServiceAddress()),
-      ReactiveSecurityContextHolder.getContext().defaultIfEmpty(nullSecCtx),
+        (SecurityContext) values[0], (Product) values[1], (List<Recommendation>) values[2], (List<Review>) values[3], serviceUtil.getServiceAddress()),
+      getSecurityContextMono(),
       integration.getProduct(productId),
       integration.getRecommendations(productId).collectList(),
       integration.getReviews(productId).collectList())
       .doOnError(ex -> LOG.warn("getCompositeProduct failed: {}", ex.toString()))
-      .log();
+      .log(LOG.getName(), FINE);
   }
 
   @Override
   public Mono<Void> deleteProduct(int productId) {
-    return ReactiveSecurityContextHolder.getContext().doOnSuccess(sc -> internalDeleteCompositeProduct(sc, productId)).then();
-  }
-
-  private Mono<Void> internalDeleteCompositeProduct(SecurityContext sc, int productId) {
     try {
-      logAuthorizationInfo(sc);
 
-      LOG.debug("deleteCompositeProduct: Deletes a product aggregate for productId: {}", productId);
+      LOG.debug("deleteCompositeProduct 4: Deletes a product aggregate for productId: {}", productId);
 
-      integration.deleteProduct(productId);
-      integration.deleteRecommendations(productId);
-      integration.deleteReviews(productId);
-
-      LOG.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
-
-      return Mono.empty();
+      return Mono.zip(r -> "",
+        getLogAuthorizationInfoMono(),
+        integration.deleteProduct(productId),
+        integration.deleteRecommendations(productId),
+        integration.deleteReviews(productId))
+        .doOnError(ex -> LOG.warn("delete failed: {}", ex.toString()))
+        .log().then();
 
     } catch (RuntimeException re) {
       LOG.warn("deleteCompositeProduct failed: {}", re.toString());
@@ -142,6 +142,14 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, productAddress, reviewAddress, recommendationAddress);
 
     return new ProductAggregate(productId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
+  }
+
+  private Mono<SecurityContext> getLogAuthorizationInfoMono() {
+    return getSecurityContextMono().doOnNext(sc -> logAuthorizationInfo(sc));
+  }
+
+  private Mono<SecurityContext> getSecurityContextMono() {
+    return ReactiveSecurityContextHolder.getContext().defaultIfEmpty(nullSecCtx);
   }
 
   private void logAuthorizationInfo(SecurityContext sc) {
