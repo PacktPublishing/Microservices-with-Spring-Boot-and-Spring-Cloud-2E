@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
-public class GatewayApplicationTests {
+class GatewayApplicationTests {
 
   @Test
-  public void contextLoads() {
+  void contextLoads() {
   }
 
 }

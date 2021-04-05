@@ -23,9 +23,8 @@ import se.magnus.microservices.core.review.persistence.ReviewRepository;
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
   "spring.cloud.stream.defaultBinder=rabbit",
   "logging.level.se.magnus=DEBUG",
-  "spring.datasource.url=jdbc:h2:mem:review-db",
   "eureka.client.enabled=false"})
-public class ReviewServiceApplicationTests {
+class ReviewServiceApplicationTests extends MySqlTestBase {
 
   @Autowired
   private WebTestClient client;
@@ -38,12 +37,12 @@ public class ReviewServiceApplicationTests {
   private Consumer<Event<Integer, Review>> messageProcessor;
 
   @BeforeEach
-  public void setupDb() {
+  void setupDb() {
     repository.deleteAll();
   }
 
   @Test
-  public void getReviewsByProductId() {
+  void getReviewsByProductId() {
 
     int productId = 1;
 
@@ -62,7 +61,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void duplicateError() {
+  void duplicateError() {
 
     int productId = 1;
     int reviewId = 1;
@@ -83,7 +82,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void deleteReviews() {
+  void deleteReviews() {
 
     int productId = 1;
     int reviewId = 1;
@@ -98,7 +97,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsMissingParameter() {
+  void getReviewsMissingParameter() {
 
     getAndVerifyReviewsByProductId("", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/review")
@@ -106,7 +105,7 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsInvalidParameter() {
+  void getReviewsInvalidParameter() {
 
     getAndVerifyReviewsByProductId("?productId=no-integer", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/review")
@@ -114,14 +113,14 @@ public class ReviewServiceApplicationTests {
   }
 
   @Test
-  public void getReviewsNotFound() {
+  void getReviewsNotFound() {
 
     getAndVerifyReviewsByProductId("?productId=213", OK)
       .jsonPath("$.length()").isEqualTo(0);
   }
 
   @Test
-  public void getReviewsInvalidParameterNegativeValue() {
+  void getReviewsInvalidParameterNegativeValue() {
 
     int productIdInvalid = -1;
 

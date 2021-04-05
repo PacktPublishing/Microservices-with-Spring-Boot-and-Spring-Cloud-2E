@@ -126,8 +126,8 @@ function recreateComposite() {
   local productId=$1
   local composite=$2
 
-  assertCurl 200 "curl -X DELETE http://$HOST:$PORT/product-composite/${productId} -s"
-  curl -X POST http://$HOST:$PORT/product-composite -H "Content-Type: application/json" --data "$composite"
+  assertCurl 202 "curl -X DELETE http://$HOST:$PORT/product-composite/${productId} -s"
+  assertEqual 202 $(curl -X POST -s http://$HOST:$PORT/product-composite -H "Content-Type: application/json" --data "$composite" -w "%{http_code}")
 }
 
 function setupTestdata() {
@@ -198,7 +198,7 @@ assertEqual $PROD_ID_REVS_RECS $(echo $RESPONSE | jq .productId)
 assertEqual 3 $(echo $RESPONSE | jq ".recommendations | length")
 assertEqual 3 $(echo $RESPONSE | jq ".reviews | length")
 
-# Verify that a 404 (Not Found) error is returned for a non existing productId ($PROD_ID_NOT_FOUND)
+# Verify that a 404 (Not Found) error is returned for a non-existing productId ($PROD_ID_NOT_FOUND)
 assertCurl 404 "curl http://$HOST:$PORT/product-composite/$PROD_ID_NOT_FOUND -s"
 assertEqual "No product found for productId: $PROD_ID_NOT_FOUND" "$(echo $RESPONSE | jq -r .message)"
 

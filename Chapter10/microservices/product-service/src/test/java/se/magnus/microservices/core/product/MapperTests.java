@@ -8,12 +8,12 @@ import se.magnus.api.core.product.Product;
 import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.services.ProductMapper;
 
-public class MapperTests {
+class MapperTests {
 
   private ProductMapper mapper = Mappers.getMapper(ProductMapper.class);
 
   @Test
-  public void mapperTests() {
+  void mapperTests() {
 
     assertNotNull(mapper);
 
