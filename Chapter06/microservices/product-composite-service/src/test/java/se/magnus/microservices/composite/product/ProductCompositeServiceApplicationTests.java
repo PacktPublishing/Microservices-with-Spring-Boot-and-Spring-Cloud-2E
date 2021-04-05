@@ -25,7 +25,7 @@ import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class ProductCompositeServiceApplicationTests {
+class ProductCompositeServiceApplicationTests {
 
   private static final int PRODUCT_ID_OK = 1;
   private static final int PRODUCT_ID_NOT_FOUND = 2;
@@ -36,7 +36,7 @@ public class ProductCompositeServiceApplicationTests {
   @MockBean private ProductCompositeIntegration compositeIntegration;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
 
     when(compositeIntegration.getProduct(PRODUCT_ID_OK))
       .thenReturn(new Product(PRODUCT_ID_OK, "name", 1, "mock-address"));
@@ -53,10 +53,10 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void contextLoads() {}
+  void contextLoads() {}
 
   @Test
-  public void createCompositeProduct1() {
+  void createCompositeProduct1() {
 
     ProductAggregate compositeProduct = new ProductAggregate(1, "name", 1, null, null, null);
 
@@ -64,7 +64,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void createCompositeProduct2() {
+  void createCompositeProduct2() {
     ProductAggregate compositeProduct = new ProductAggregate(1, "name", 1,
       singletonList(new RecommendationSummary(1, "a", 1, "c")),
       singletonList(new ReviewSummary(1, "a", "s", "c")), null);
@@ -73,7 +73,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void deleteCompositeProduct() {
+  void deleteCompositeProduct() {
     ProductAggregate compositeProduct = new ProductAggregate(1, "name", 1,
       singletonList(new RecommendationSummary(1, "a", 1, "c")),
       singletonList(new ReviewSummary(1, "a", "s", "c")), null);
@@ -85,7 +85,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductById() {
+  void getProductById() {
 
     getAndVerifyProduct(PRODUCT_ID_OK, OK)
       .jsonPath("$.productId").isEqualTo(PRODUCT_ID_OK)
@@ -94,7 +94,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductNotFound() {
+  void getProductNotFound() {
 
     getAndVerifyProduct(PRODUCT_ID_NOT_FOUND, NOT_FOUND)
       .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_NOT_FOUND)
@@ -102,7 +102,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductInvalidInput() {
+  void getProductInvalidInput() {
 
     getAndVerifyProduct(PRODUCT_ID_INVALID, UNPROCESSABLE_ENTITY)
       .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_INVALID)
