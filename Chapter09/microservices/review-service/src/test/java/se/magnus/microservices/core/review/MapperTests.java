@@ -11,12 +11,12 @@ import se.magnus.microservices.core.review.persistence.ReviewEntity;
 import se.magnus.microservices.core.review.services.ReviewMapper;
 
 
-public class MapperTests {
+class MapperTests {
 
   private ReviewMapper mapper = Mappers.getMapper(ReviewMapper.class);
 
   @Test
-  public void mapperTests() {
+  void mapperTests() {
 
     assertNotNull(mapper);
 
@@ -41,7 +41,7 @@ public class MapperTests {
   }
 
   @Test
-  public void mapperListTests() {
+  void mapperListTests() {
 
     assertNotNull(mapper);
 

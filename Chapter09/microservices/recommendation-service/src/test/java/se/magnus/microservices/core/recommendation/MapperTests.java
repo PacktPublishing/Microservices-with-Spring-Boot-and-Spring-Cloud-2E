@@ -10,12 +10,12 @@ import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
 import se.magnus.microservices.core.recommendation.services.RecommendationMapper;
 
-public class MapperTests {
+class MapperTests {
 
   private RecommendationMapper mapper = Mappers.getMapper(RecommendationMapper.class);
 
   @Test
-  public void mapperTests() {
+  void mapperTests() {
 
     assertNotNull(mapper);
 
@@ -40,7 +40,7 @@ public class MapperTests {
   }
 
   @Test
-  public void mapperListTests() {
+  void mapperListTests() {
 
     assertNotNull(mapper);
 
