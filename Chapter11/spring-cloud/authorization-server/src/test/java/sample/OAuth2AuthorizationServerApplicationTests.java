@@ -33,13 +33,13 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @SpringBootTest(properties = {"eureka.client.enabled=false", "spring.cloud.config.enabled=false"})
 @AutoConfigureMockMvc
-public class OAuth2AuthorizationServerApplicationTests {
+class OAuth2AuthorizationServerApplicationTests {
 
   @Autowired
   MockMvc mvc;
 
   @Test
-  public void requestTokenUsingClientCredentialsGrantType() throws Exception {
+  void requestTokenUsingClientCredentialsGrantType() throws Exception {
 
     this.mvc.perform(post("/oauth2/token")
       .param("grant_type", "client_credentials")
@@ -48,14 +48,14 @@ public class OAuth2AuthorizationServerApplicationTests {
   }
 
   @Test
-  public void requestOpenidConfiguration() throws Exception {
+  void requestOpenidConfiguration() throws Exception {
 
     this.mvc.perform(get("/.well-known/openid-configuration"))
         .andExpect(status().isOk());
   }
 
   @Test
-  public void requestJwkSet() throws Exception {
+  void requestJwkSet() throws Exception {
 
     this.mvc.perform(get("/oauth2/jwks"))
         .andExpect(status().isOk());

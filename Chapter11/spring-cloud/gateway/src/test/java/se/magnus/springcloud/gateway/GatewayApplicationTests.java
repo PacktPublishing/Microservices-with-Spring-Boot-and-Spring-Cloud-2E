@@ -10,10 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
   properties = {
     "spring.security.oauth2.resourceserver.jwt.jwk-set-uri=some-url",
     "eureka.client.enabled=false"})
-public class GatewayApplicationTests {
+class GatewayApplicationTests {
 
   @Test
-  public void contextLoads() {
+  void contextLoads() {
   }
 
 }

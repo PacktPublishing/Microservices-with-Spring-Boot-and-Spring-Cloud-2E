@@ -1,8 +1,8 @@
 package se.magnus.api.event;
 
-import static java.time.LocalDateTime.now;
+import static java.time.ZonedDateTime.now;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Event<K, T> {
 
@@ -14,7 +14,7 @@ public class Event<K, T> {
   private final Type eventType;
   private final K key;
   private final T data;
-  private final LocalDateTime eventCreatedAt;
+  private final ZonedDateTime eventCreatedAt;
 
   public Event() {
     this.eventType = null;
@@ -42,7 +42,7 @@ public class Event<K, T> {
     return data;
   }
 
-  public LocalDateTime getEventCreatedAt() {
+  public ZonedDateTime getEventCreatedAt() {
     return eventCreatedAt;
   }
 }

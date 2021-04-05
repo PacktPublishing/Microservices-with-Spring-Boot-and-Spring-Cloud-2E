@@ -11,7 +11,7 @@ import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @DataMongoTest
-public class PersistenceTests {
+class PersistenceTests {
 
   @Autowired
   private ProductRepository repository;
@@ -19,7 +19,7 @@ public class PersistenceTests {
   private ProductEntity savedEntity;
 
   @BeforeEach
-  public void setupDb() {
+  void setupDb() {
     StepVerifier.create(repository.deleteAll()).verifyComplete();
 
     ProductEntity entity = new ProductEntity(1, "n", 1);
@@ -33,7 +33,7 @@ public class PersistenceTests {
 
 
   @Test
-  public void create() {
+  void create() {
     ProductEntity newEntity = new ProductEntity(2, "n", 2);
 
     StepVerifier.create(repository.save(newEntity))
@@ -48,7 +48,7 @@ public class PersistenceTests {
   }
 
   @Test
-  public void update() {
+  void update() {
     savedEntity.setName("n2");
     StepVerifier.create(repository.save(savedEntity))
       .expectNextMatches(updatedEntity -> updatedEntity.getName().equals("n2"))
@@ -62,13 +62,13 @@ public class PersistenceTests {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     StepVerifier.create(repository.delete(savedEntity)).verifyComplete();
     StepVerifier.create(repository.existsById(savedEntity.getId())).expectNext(false).verifyComplete();
   }
 
   @Test
-  public void getByProductId() {
+  void getByProductId() {
 
     StepVerifier.create(repository.findByProductId(savedEntity.getProductId()))
       .expectNextMatches(foundEntity -> areProductEqual(savedEntity, foundEntity))
@@ -76,13 +76,13 @@ public class PersistenceTests {
   }
 
   @Test
-  public void duplicateError() {
+  void duplicateError() {
     ProductEntity entity = new ProductEntity(savedEntity.getProductId(), "n", 1);
     StepVerifier.create(repository.save(entity)).expectError(DuplicateKeyException.class).verify();
   }
 
   @Test
-  public void optimisticLockError() {
+  void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
     ProductEntity entity1 = repository.findById(savedEntity.getId()).block();
