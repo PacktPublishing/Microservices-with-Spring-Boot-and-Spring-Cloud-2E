@@ -20,7 +20,7 @@ import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class ProductCompositeServiceApplicationTests {
+class ProductCompositeServiceApplicationTests {
 
   private static final int PRODUCT_ID_OK = 1;
   private static final int PRODUCT_ID_NOT_FOUND = 2;
@@ -31,7 +31,7 @@ public class ProductCompositeServiceApplicationTests {
   @MockBean private ProductCompositeIntegration compositeIntegration;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
 
     when(compositeIntegration.getProduct(PRODUCT_ID_OK))
       .thenReturn(new Product(PRODUCT_ID_OK, "name", 1, "mock-address"));
@@ -48,10 +48,10 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void contextLoads() {}
+  void contextLoads() {}
 
   @Test
-  public void getProductById() {
+  void getProductById() {
 
     client.get()
       .uri("/product-composite/" + PRODUCT_ID_OK)
@@ -66,7 +66,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductNotFound() {
+  void getProductNotFound() {
 
     client.get()
       .uri("/product-composite/" + PRODUCT_ID_NOT_FOUND)
@@ -80,7 +80,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductInvalidInput() {
+  void getProductInvalidInput() {
 
     client.get()
       .uri("/product-composite/" + PRODUCT_ID_INVALID)
