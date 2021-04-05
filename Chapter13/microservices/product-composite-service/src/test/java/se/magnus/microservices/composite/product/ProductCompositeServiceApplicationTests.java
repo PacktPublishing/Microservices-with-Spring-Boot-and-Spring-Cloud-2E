@@ -30,8 +30,9 @@ import se.magnus.microservices.composite.product.services.ProductCompositeIntegr
   properties = {
     "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
     "spring.main.allow-bean-definition-overriding=true",
-    "eureka.client.enabled=false"})
-public class ProductCompositeServiceApplicationTests {
+    "eureka.client.enabled=false",
+    "spring.cloud.config.enabled=false"})
+class ProductCompositeServiceApplicationTests {
 
   private static final int PRODUCT_ID_OK = 1;
   private static final int PRODUCT_ID_NOT_FOUND = 2;
@@ -44,7 +45,7 @@ public class ProductCompositeServiceApplicationTests {
   private ProductCompositeIntegration compositeIntegration;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
 
     when(compositeIntegration.getProduct(eq(PRODUCT_ID_OK), anyInt(), anyInt()))
       .thenReturn(Mono.just(new Product(PRODUCT_ID_OK, "name", 1, "mock-address")));
@@ -61,11 +62,11 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void contextLoads() {
+  void contextLoads() {
   }
 
   @Test
-  public void getProductById() {
+  void getProductById() {
 
     getAndVerifyProduct(PRODUCT_ID_OK, OK)
       .jsonPath("$.productId").isEqualTo(PRODUCT_ID_OK)
@@ -74,7 +75,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductNotFound() {
+  void getProductNotFound() {
 
     getAndVerifyProduct(PRODUCT_ID_NOT_FOUND, NOT_FOUND)
       .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_NOT_FOUND)
@@ -82,7 +83,7 @@ public class ProductCompositeServiceApplicationTests {
   }
 
   @Test
-  public void getProductInvalidInput() {
+  void getProductInvalidInput() {
 
     getAndVerifyProduct(PRODUCT_ID_INVALID, UNPROCESSABLE_ENTITY)
       .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_INVALID)

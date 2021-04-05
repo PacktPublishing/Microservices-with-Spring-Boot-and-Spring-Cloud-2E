@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -28,6 +29,7 @@ public interface ProductCompositeService {
     @ApiResponse(responseCode = "400", description = "${api.responseCodes.badRequest.description}"),
     @ApiResponse(responseCode = "422", description = "${api.responseCodes.unprocessableEntity.description}")
   })
+  @ResponseStatus(HttpStatus.ACCEPTED)
   @PostMapping(
     value    = "/product-composite",
     consumes = "application/json")
@@ -69,6 +71,7 @@ public interface ProductCompositeService {
     @ApiResponse(responseCode = "400", description = "${api.responseCodes.badRequest.description}"),
     @ApiResponse(responseCode = "422", description = "${api.responseCodes.unprocessableEntity.description}")
   })
+  @ResponseStatus(HttpStatus.ACCEPTED)
   @DeleteMapping(value = "/product-composite/{productId}")
   Mono<Void> deleteProduct(@PathVariable int productId);
 }
