@@ -21,10 +21,9 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
-  "spring.data.mongodb.port: 0",
   "eureka.client.enabled=false",
   "spring.cloud.config.enabled=false"})
-class ProductServiceApplicationTests {
+class ProductServiceApplicationTests extends MongoDbTestBase {
 
   @Autowired
   private WebTestClient client;
