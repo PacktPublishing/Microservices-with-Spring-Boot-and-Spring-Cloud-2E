@@ -33,7 +33,11 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+
+    implementation platform('org.testcontainers:testcontainers-bom:1.15.2')
+    testImplementation 'org.testcontainers:testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mongodb'
 }
 
 dependencyManagement {
