@@ -15,10 +15,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0"})
-class RecommendationServiceApplicationTests {
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
-  @Autowired 
+  @Autowired
   private WebTestClient client;
 
   @Autowired

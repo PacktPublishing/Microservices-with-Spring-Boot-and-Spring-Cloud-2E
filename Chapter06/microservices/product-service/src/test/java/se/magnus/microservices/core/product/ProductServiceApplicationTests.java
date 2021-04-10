@@ -16,8 +16,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.product.Product;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0"})
-class ProductServiceApplicationTests {
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+class ProductServiceApplicationTests extends MongoDbTestBase {
 
   @Autowired private WebTestClient client;
 
