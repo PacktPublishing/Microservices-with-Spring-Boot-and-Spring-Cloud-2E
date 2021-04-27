@@ -1,0 +1,16 @@
+fullnameOverride: mysql
+
+image:
+  repository: registry.hub.docker.com/library
+  name: mysql
+  tag: 5.7.32
+  pullPolicy: IfNotPresent
+  args:
+    - "--ignore-db-dir=lost+found"
+ports:
+  - containerPort: 3306
+
+service:
+  ports:
+    - port: 3306
+

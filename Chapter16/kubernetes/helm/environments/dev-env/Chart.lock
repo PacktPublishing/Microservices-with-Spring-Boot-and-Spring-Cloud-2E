@@ -1,0 +1,36 @@
+dependencies:
+- name: rabbitmq
+  repository: file://../../components/rabbitmq
+  version: 1.0.0
+- name: mongodb
+  repository: file://../../components/mongodb
+  version: 1.0.0
+- name: mysql
+  repository: file://../../components/mysql
+  version: 1.0.0
+- name: config-server
+  repository: file://../../components/config-server
+  version: 1.0.0
+- name: gateway
+  repository: file://../../components/gateway
+  version: 1.0.0
+- name: auth-server
+  repository: file://../../components/auth-server
+  version: 1.0.0
+- name: product
+  repository: file://../../components/product
+  version: 1.0.0
+- name: recommendation
+  repository: file://../../components/recommendation
+  version: 1.0.0
+- name: review
+  repository: file://../../components/review
+  version: 1.0.0
+- name: product-composite
+  repository: file://../../components/product-composite
+  version: 1.0.0
+- name: zipkin-server
+  repository: file://../../components/zipkin-server
+  version: 1.0.0
+digest: sha256:78c6813d204550b54b3018735a7bfdef441ac9be0f57e365883a9f7b1eb9cf87
+generated: "2021-04-25T16:22:32.328147+02:00"
