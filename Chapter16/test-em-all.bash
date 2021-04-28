@@ -6,6 +6,7 @@
 #
 : ${HOST=localhost}
 : ${PORT=8443}
+: ${USE_K8S=false}
 : ${PROD_ID_REVS_RECS=1}
 : ${PROD_ID_NOT_FOUND=13}
 : ${PROD_ID_NO_RECS=113}
@@ -174,8 +175,7 @@ function testCircuitBreaker() {
 
     echo "Start Circuit Breaker tests!"
 
-    # Assume we are using Docker Compose if we are running on localhost, otherwise Kubernetes
-    if [ "$HOST" = "localhost" ]
+    if [[ $USE_K8S == "false" ]]
     then
         EXEC="docker-compose exec -T product-composite"
     else
@@ -239,6 +239,7 @@ echo "Start Tests:" `date`
 
 echo "HOST=${HOST}"
 echo "PORT=${PORT}"
+echo "USE_K8S=${USE_K8S}"
 echo "SKIP_CB_TESTS=${SKIP_CB_TESTS}"
 
 if [[ $@ == *"start"* ]]
