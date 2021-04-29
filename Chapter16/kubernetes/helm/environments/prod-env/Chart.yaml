@@ -6,6 +6,10 @@ version: 1.0.0
 
 dependencies:
 
+  - name: common
+    version: 1.0.0
+    repository: file://../../common
+
   - name: config-server
     version: 1.0.0
     repository: file://../../components/config-server

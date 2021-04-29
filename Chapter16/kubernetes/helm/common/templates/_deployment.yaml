@@ -26,7 +26,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-
           {{- with .Values.image.args }}
           args:
             {{- toYaml . | nindent 12 }}
@@ -45,8 +44,6 @@ spec:
               name: {{ . }}
           {{- end }}
           {{- end }}
-          ports:
-{{ toYaml .Values.ports | indent 12 }}
           {{- if .Values.livenessProbe_enabled }}
           livenessProbe:
 {{ toYaml .Values.livenessProbe | indent 12 }}
@@ -55,6 +52,8 @@ spec:
           readinessProbe:
 {{ toYaml .Values.readinessProbe | indent 12 }}
           {{- end }}
+          ports:
+{{ toYaml .Values.ports | indent 12 }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       {{- if .Values.configmap.enabled }}

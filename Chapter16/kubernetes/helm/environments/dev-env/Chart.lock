@@ -1,4 +1,7 @@
 dependencies:
+- name: common
+  repository: file://../../common
+  version: 1.0.0
 - name: rabbitmq
   repository: file://../../components/rabbitmq
   version: 1.0.0
@@ -32,5 +35,5 @@ dependencies:
 - name: zipkin-server
   repository: file://../../components/zipkin-server
   version: 1.0.0
-digest: sha256:78c6813d204550b54b3018735a7bfdef441ac9be0f57e365883a9f7b1eb9cf87
-generated: "2021-04-25T16:22:32.328147+02:00"
+digest: sha256:8735dd5d242e8438f0bfadd87eb1c91e8d731a87152c9a3b7c3daa3dec864667
+generated: "2021-04-29T11:19:03.365615+02:00"

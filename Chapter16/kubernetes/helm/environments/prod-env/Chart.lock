@@ -1,4 +1,7 @@
 dependencies:
+- name: common
+  repository: file://../../common
+  version: 1.0.0
 - name: config-server
   repository: file://../../components/config-server
   version: 1.0.0
@@ -23,5 +26,5 @@ dependencies:
 - name: zipkin-server
   repository: file://../../components/zipkin-server
   version: 1.0.0
-digest: sha256:7493e8ce67ca9c1aae86fba476d2254027c0aec2104a27e8ba28636ca5968e93
-generated: "2021-04-25T16:22:42.191738+02:00"
+digest: sha256:ab7a7952dfed4259c4a6c1e54f210c9b4a4374b8bde1b501b9013f0bad1818af
+generated: "2021-04-29T13:45:33.879089+02:00"

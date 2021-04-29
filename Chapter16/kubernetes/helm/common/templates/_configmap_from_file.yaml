@@ -10,4 +10,3 @@ metadata:
 data:
 {{ (.Files.Glob "config-repo/*").AsConfig | indent 2 }}
 {{- end -}}
-
