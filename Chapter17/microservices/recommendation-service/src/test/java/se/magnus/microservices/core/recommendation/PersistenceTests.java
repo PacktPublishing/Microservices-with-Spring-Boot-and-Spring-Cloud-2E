@@ -15,9 +15,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
-@DataMongoTest(
-  excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class,
-  properties = {"spring.cloud.config.enabled=false"})
+@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
 class PersistenceTests extends MongoDbTestBase {
 
   @Autowired

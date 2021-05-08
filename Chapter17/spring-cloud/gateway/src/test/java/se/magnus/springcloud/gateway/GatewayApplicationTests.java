@@ -7,9 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(
   webEnvironment = RANDOM_PORT,
-  properties = {
-    "spring.security.oauth2.resourceserver.jwt.jwk-set-uri=some-url",
-    "spring.cloud.config.enabled=false"})
+  properties = {"spring.security.oauth2.resourceserver.jwt.jwk-set-uri=some-url"})
 class GatewayApplicationTests {
 
   @Test
