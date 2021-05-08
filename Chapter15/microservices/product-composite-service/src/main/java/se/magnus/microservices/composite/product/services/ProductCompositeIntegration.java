@@ -43,9 +43,9 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
   private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeIntegration.class);
 
-  private final String productServiceUrl = "http://product";
-  private final String recommendationServiceUrl = "http://recommendation";
-  private final String reviewServiceUrl = "http://review";
+  private static final String PRODUCT_SERVICE_URL = "http://product";
+  private static final String RECOMMENDATION_SERVICE_URL = "http://recommendation";
+  private static final String REVIEW_SERVICE_URL = "http://review";
 
   private final Scheduler publishEventScheduler;
   private final WebClient webClient;
@@ -57,12 +57,12 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Autowired
   public ProductCompositeIntegration(
     @Qualifier("publishEventScheduler") Scheduler publishEventScheduler,
-    WebClient webClient,
+    WebClient.Builder webClientBuilder,
     ObjectMapper mapper,
     StreamBridge streamBridge,
     ServiceUtil serviceUtil
   ) {
-    this.webClient = webClient;
+    this.webClient = webClientBuilder.build();
 
     this.publishEventScheduler = publishEventScheduler;
     this.mapper = mapper;
@@ -85,7 +85,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @CircuitBreaker(name = "product", fallbackMethod = "getProductFallbackValue")
   public Mono<Product> getProduct(int productId, int delay, int faultPercent) {
 
-    URI url = UriComponentsBuilder.fromUriString(productServiceUrl
+    URI url = UriComponentsBuilder.fromUriString(PRODUCT_SERVICE_URL
       + "/product/{productId}?delay={delay}&faultPercent={faultPercent}").build(productId, delay, faultPercent);
     LOG.debug("Will call the getProduct API on URL: {}", url);
 
@@ -127,7 +127,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Override
   public Flux<Recommendation> getRecommendations(int productId) {
 
-    URI url = UriComponentsBuilder.fromUriString(recommendationServiceUrl + "/recommendation?productId={productId}").build(productId);
+    URI url = UriComponentsBuilder.fromUriString(RECOMMENDATION_SERVICE_URL + "/recommendation?productId={productId}").build(productId);
 
     LOG.debug("Will call the getRecommendations API on URL: {}", url);
 
@@ -154,7 +154,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Override
   public Flux<Review> getReviews(int productId) {
 
-    URI url = UriComponentsBuilder.fromUriString(reviewServiceUrl + "/review?productId={productId}").build(productId);
+    URI url = UriComponentsBuilder.fromUriString(REVIEW_SERVICE_URL + "/review?productId={productId}").build(productId);
 
     LOG.debug("Will call the getReviews API on URL: {}", url);
 
