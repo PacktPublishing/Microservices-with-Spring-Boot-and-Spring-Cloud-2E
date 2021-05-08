@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
   private int getRandomNumber(int min, int max) {
 
     if (max < min) {
-      throw new RuntimeException("Max must be greater than min");
+      throw new IllegalArgumentException("Max must be greater than min");
     }
 
     return randomNumberGenerator.nextInt((max - min) + 1) + min;
