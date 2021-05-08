@@ -1,5 +1,7 @@
 package se.magnus.springcloud.gateway;
 
+import static java.util.logging.Level.FINE;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -19,8 +21,8 @@ public class HealthCheckConfiguration {
   private WebClient webClient;
 
   @Autowired
-  public HealthCheckConfiguration(WebClient webClient) {
-    this.webClient = webClient;
+  public HealthCheckConfiguration(WebClient.Builder webClientBuilder) {
+    this.webClient = webClientBuilder.build();
   }
 
   @Bean
@@ -36,13 +38,13 @@ public class HealthCheckConfiguration {
     return CompositeReactiveHealthContributor.fromMap(registry);
   }
 
-  private Mono<Health> getHealth(String url) {
-    url += "/actuator/health";
-    LOG.debug("Will call the Health API on URL: {}", url);
+  private Mono<Health> getHealth(String baseUrl) {
+    String url = baseUrl + "/actuator/health";
+    LOG.debug("Setting up a call to the Health API on URL: {}", url);
     return webClient.get().uri(url).retrieve().bodyToMono(String.class)
       .map(s -> new Health.Builder().up().build())
       .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()))
-      .log();
+      .log(LOG.getName(), FINE);
   }
 
 }
