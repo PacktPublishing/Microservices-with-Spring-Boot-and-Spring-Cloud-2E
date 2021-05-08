@@ -84,11 +84,6 @@ public class ProductCompositeServiceApplication {
     return WebClient.builder();
   }
 
-  @Bean
-  public WebClient webClient(WebClient.Builder webClientBuilder) {
-    return webClientBuilder.build();
-  }
-
   public static void main(String[] args) {
     SpringApplication.run(ProductCompositeServiceApplication.class, args);
   }
