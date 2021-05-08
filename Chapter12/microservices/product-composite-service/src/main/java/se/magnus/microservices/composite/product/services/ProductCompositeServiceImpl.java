@@ -105,7 +105,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
         integration.deleteRecommendations(productId),
         integration.deleteReviews(productId))
         .doOnError(ex -> LOG.warn("delete failed: {}", ex.toString()))
-        .log().then();
+        .log(LOG.getName(), FINE).then();
 
     } catch (RuntimeException re) {
       LOG.warn("deleteCompositeProduct failed: {}", re.toString());
