@@ -50,7 +50,6 @@ resources:
 
 service:
   type: ClusterIP
-  port: 80
   ports:
   - port: 80
     targetPort: http
