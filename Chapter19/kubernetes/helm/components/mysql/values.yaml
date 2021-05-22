@@ -1,0 +1,20 @@
+fullnameOverride: mysql
+
+annotations:
+  sidecar.istio.io/inject: "false"
+
+image:
+  repository: registry.hub.docker.com/library
+  name: mysql
+  tag: 5.7.32
+  pullPolicy: IfNotPresent
+  args:
+    - "--ignore-db-dir=lost+found"
+
+ports:
+  - containerPort: 3306
+
+service:
+  ports:
+    - name: mysql
+      port: 3306
