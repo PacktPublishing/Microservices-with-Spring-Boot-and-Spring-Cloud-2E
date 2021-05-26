@@ -27,6 +27,7 @@ spec:
 {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "common.name" . }}
+        app: {{ include "common.name" . }}
         version: {{ .Values.image.tag }}
     spec:
       containers:
