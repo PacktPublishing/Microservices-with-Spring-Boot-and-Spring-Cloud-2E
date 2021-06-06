@@ -1,0 +1,92 @@
+secrets:
+
+  mongodb-server-credentials:
+    MONGO_INITDB_ROOT_USERNAME: mongodb-user-dev
+    MONGO_INITDB_ROOT_PASSWORD: mongodb-pwd-dev
+
+  mongodb-credentials:
+    SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+    SPRING_DATA_MONGODB_USERNAME: mongodb-user-dev
+    SPRING_DATA_MONGODB_PASSWORD: mongodb-pwd-dev
+
+  mysql-server-credentials:
+    MYSQL_ROOT_PASSWORD: rootpwd
+    MYSQL_DATABASE: review-db
+    MYSQL_USER: mysql-user-dev
+    MYSQL_PASSWORD: mysql-pwd-dev
+
+  mysql-credentials:
+    SPRING_DATASOURCE_USERNAME: mysql-user-dev
+    SPRING_DATASOURCE_PASSWORD: mysql-pwd-dev
+
+mongodb:
+  envFromSecretRefs:
+    - mongodb-server-credentials
+
+mysql:
+  envFromSecretRefs:
+    - mysql-server-credentials
+
+product:
+  image:
+    name: native-product-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_0,kafka"
+  envFromSecretRefs:
+    - mongodb-credentials
+
+product-green:
+  image:
+    name: native-product-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_1,kafka"
+  envFromSecretRefs:
+    - mongodb-credentials
+
+recommendation:
+  image:
+    name: native-recommendation-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_0,kafka"
+  envFromSecretRefs:
+    - mongodb-credentials
+
+recommendation-green:
+  image:
+    name: native-recommendation-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_1,kafka"
+  envFromSecretRefs:
+    - mongodb-credentials
+
+review:
+  image:
+    name: native-review-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_0,kafka"
+  envFromSecretRefs:
+    - mysql-credentials
+
+review-green:
+  image:
+    name: native-review-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,streaming_instance_1,kafka"
+  envFromSecretRefs:
+    - mysql-credentials
+
+product-composite:
+  image:
+    name: native-product-composite-service
+  env:
+    SPRING_PROFILES_ACTIVE: "docker,streaming_partitioned,kafka"
+  readinessProbe:
+    httpGet:
+      path: /actuator/info
+
+destinationRules:
+  - name: product-composite
+  - name: auth-server
+  - name: product
+  - name: recommendation
+  - name: review

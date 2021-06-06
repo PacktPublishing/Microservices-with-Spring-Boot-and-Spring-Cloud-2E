@@ -1,0 +1,23 @@
+[
+  ["java.lang.reflect.GenericArrayType","org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy","java.io.Serializable"],
+  ["java.lang.reflect.ParameterizedType","org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy","java.io.Serializable"],
+  ["java.lang.reflect.TypeVariable","org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy","java.io.Serializable"],
+  ["java.lang.reflect.WildcardType","org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy","java.io.Serializable"],
+  ["java.sql.Connection"],
+  ["javax.validation.Validator","org.springframework.aop.SpringProxy","org.springframework.aop.framework.Advised","org.springframework.core.DecoratingProxy"],
+  ["org.hibernate.Session","org.springframework.orm.jpa.EntityManagerProxy"],
+  ["org.hibernate.SessionFactory","org.springframework.orm.jpa.EntityManagerFactoryInfo"],
+  ["org.springframework.beans.factory.annotation.Qualifier","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.boot.actuate.endpoint.annotation.EndpointExtension","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.boot.context.properties.ConfigurationProperties","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.cloud.stream.annotation.EnableBinding","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.context.annotation.Import","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.data.jpa.repository.support.CrudMethodMetadata","org.springframework.aop.SpringProxy","org.springframework.aop.framework.Advised","org.springframework.core.DecoratingProxy"],
+  ["org.springframework.expression.EvaluationContext","org.springframework.aop.SpringProxy","org.springframework.aop.framework.Advised","org.springframework.core.DecoratingProxy"],
+  ["org.springframework.web.bind.annotation.ControllerAdvice","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.web.bind.annotation.RequestHeader","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.web.bind.annotation.RequestMapping","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.web.bind.annotation.RequestParam","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["org.springframework.web.bind.annotation.ResponseStatus","org.springframework.core.annotation.SynthesizedAnnotation"],
+  ["se.magnus.microservices.core.review.persistence.ReviewRepository","org.springframework.data.repository.Repository","org.springframework.transaction.interceptor.TransactionalProxy","org.springframework.aop.framework.Advised","org.springframework.core.DecoratingProxy"]
+]
