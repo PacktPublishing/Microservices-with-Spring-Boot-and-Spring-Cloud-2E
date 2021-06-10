@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.nativex.hint.ClassProxyHint;
+import org.springframework.nativex.hint.AotProxyHint;
 import org.springframework.nativex.hint.FieldHint;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
@@ -139,7 +139,7 @@ import se.magnus.util.http.HttpErrorInfo;
 
 @TypeHint(types = OptionalValidatorFactoryBean.class)
 
-@ClassProxyHint(targetClass = ProductCompositeIntegration.class, interfaces = {
+@AotProxyHint(targetClass = ProductCompositeIntegration.class, interfaces = {
   ProductService.class,
   RecommendationService.class,
   ReviewService.class,
