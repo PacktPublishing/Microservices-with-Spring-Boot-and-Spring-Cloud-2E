@@ -148,16 +148,6 @@ import se.magnus.util.http.HttpErrorInfo;
   org.springframework.core.DecoratingProxy.class
 })
 
-//@ProxyHint(types = {
-//  ProductCompositeIntegrationInterface.class,
-//  se.magnus.api.core.product.ProductService.class,
-//  se.magnus.api.core.recommendation.RecommendationService.class,
-//  se.magnus.api.core.review.ReviewService.class,
-//  org.springframework.aop.SpringProxy.class,
-//  org.springframework.aop.framework.Advised.class,
-//  org.springframework.core.DecoratingProxy.class
-//})
-
 @SpringBootApplication
 @ComponentScan("se.magnus")
 public class ProductCompositeServiceApplication {
