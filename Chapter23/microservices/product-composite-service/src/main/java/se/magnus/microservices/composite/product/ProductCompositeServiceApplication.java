@@ -8,17 +8,24 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.SpringProxy;
+import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.DecoratingProxy;
+import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.nativex.hint.AotProxyHint;
 import org.springframework.nativex.hint.FieldHint;
+import org.springframework.nativex.hint.JdkProxyHint;
 import org.springframework.nativex.hint.TypeHint;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -139,13 +146,22 @@ import se.magnus.util.http.HttpErrorInfo;
 
 @TypeHint(types = OptionalValidatorFactoryBean.class)
 
+@JdkProxyHint(types = { RestController.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { Controller.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { GetMapping.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { PostMapping.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { DeleteMapping.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { RequestParam.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { RequestHeader.class, SynthesizedAnnotation.class })
+@JdkProxyHint(types = { PathVariable.class, SynthesizedAnnotation.class })
+
 @AotProxyHint(targetClass = ProductCompositeIntegration.class, interfaces = {
   ProductService.class,
   RecommendationService.class,
   ReviewService.class,
-  org.springframework.aop.SpringProxy.class,
-  org.springframework.aop.framework.Advised.class,
-  org.springframework.core.DecoratingProxy.class
+  SpringProxy.class,
+  Advised.class,
+  DecoratingProxy.class
 })
 
 @SpringBootApplication
