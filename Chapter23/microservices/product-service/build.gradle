@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.0'
+    id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'org.springframework.experimental.aot' version '0.10.0-SNAPSHOT'
+    id 'org.springframework.experimental.aot' version '0.10.0'
 }
 
 group = 'se.magnus.microservices.core.product'
@@ -16,8 +16,6 @@ ext {
 
 repositories {
     maven { url 'https://repo.spring.io/release' }
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://repo.spring.io/snapshot' }
     mavenCentral()
 }
 
