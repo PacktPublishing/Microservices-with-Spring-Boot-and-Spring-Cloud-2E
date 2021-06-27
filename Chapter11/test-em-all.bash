@@ -239,7 +239,7 @@ assertCurl 403 "curl -X DELETE $READER_AUTH -k https://$HOST:$PORT/product-compo
 
 # Verify access to Swagger and OpenAPI URLs
 echo "Swagger/OpenAPI tests"
-assertCurl 307 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
+assertCurl 302 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
 assertCurl 200 "curl -ksL https://$HOST:$PORT/openapi/swagger-ui.html"
 assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config"
 assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs"

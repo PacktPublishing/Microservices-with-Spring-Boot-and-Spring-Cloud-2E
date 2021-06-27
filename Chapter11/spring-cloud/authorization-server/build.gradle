@@ -1,4 +1,7 @@
 plugins {
+    // Can't upgrade to Spring Boot 2.5.x until fixes for the following issues are released:
+    // 1. https://github.com/spring-projects-experimental/spring-authorization-server/issues/305
+    // 2. https://github.com/spring-projects/spring-security/issues/9787
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
