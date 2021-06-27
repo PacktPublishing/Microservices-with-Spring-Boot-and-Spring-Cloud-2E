@@ -304,8 +304,8 @@ READER_AUTH="-H \"Authorization: Bearer $READER_ACCESS_TOKEN\""
 assertCurl 200 "curl $READER_AUTH -k https://$HOST:$PORT/product-composite/$PROD_ID_REVS_RECS -s"
 assertCurl 403 "curl -X DELETE $READER_AUTH -k https://$HOST:$PORT/product-composite/$PROD_ID_REVS_RECS -s"
 
-## Verify access to Swagger and OpenAPI URLs
-#echo "Swagger/OpenAPI tests"
+# Verify access to Swagger and OpenAPI URLs
+echo "Swagger/OpenAPI tests"
 assertCurl 302 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
 assertCurl 200 "curl -ksL https://$HOST:$PORT/openapi/swagger-ui.html"
 assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/webjars/swagger-ui/3.49.0/index.html?configUrl=/openapi/v3/api-docs/swagger-config"

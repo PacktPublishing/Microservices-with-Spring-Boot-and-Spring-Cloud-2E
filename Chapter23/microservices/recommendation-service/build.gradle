@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.1'
+    id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.springframework.experimental.aot' version '0.10.0'
@@ -17,6 +17,10 @@ ext {
 repositories {
     maven { url 'https://repo.spring.io/release' }
     mavenCentral()
+}
+
+jar {
+    enabled = false
 }
 
 dependencies {
