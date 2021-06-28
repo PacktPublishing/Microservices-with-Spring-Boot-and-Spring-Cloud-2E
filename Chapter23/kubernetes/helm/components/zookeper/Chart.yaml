@@ -1,5 +1,0 @@
-apiVersion: v2
-appVersion: "1.0"
-description: A Helm chart for Zookeper
-name: zookeper
-version: 1.0.0

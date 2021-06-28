@@ -2,8 +2,8 @@ dependencies:
 - name: common
   repository: file://../../common
   version: 1.0.0
-- name: zookeper
-  repository: file://../../components/zookeper
+- name: zookeeper
+  repository: file://../../components/zookeeper
   version: 1.0.0
 - name: kafka
   repository: file://../../components/kafka
@@ -38,5 +38,5 @@ dependencies:
 - name: product-composite
   repository: file://../../components/product-composite
   version: 1.0.0
-digest: sha256:0d97a6a3f2cb42617f8c6b341e3dd56e2799823f4e45119f13ed4fbcee2d1958
-generated: "2021-06-06T11:58:35.15512+02:00"
+digest: sha256:df0ae3477e1764339c66786d53ad234c448c8017f5fd0098ee76f72bc7660abe
+generated: "2021-06-28T12:46:27.435644+02:00"

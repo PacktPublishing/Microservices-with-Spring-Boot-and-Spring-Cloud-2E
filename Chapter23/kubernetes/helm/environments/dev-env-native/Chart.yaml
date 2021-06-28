@@ -10,9 +10,9 @@ dependencies:
     version: 1.0.0
     repository: file://../../common
 
-  - name: zookeper
+  - name: zookeeper
     version: 1.0.0
-    repository: file://../../components/zookeper
+    repository: file://../../components/zookeeper
 
   - name: kafka
     version: 1.0.0
