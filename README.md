@@ -19,3 +19,11 @@ By the end of this book, you'll be confident in building microservices that are 
 5. Deploy and manage microservices with Kubernetes
 6. Apply Istio for improved security, observability, and traffic management
 7. Write and run automated microservice tests with JUnit, testcontainers, Gradle, and bash
+
+## Errata
+* **Page 147 (Defining index for MongoDB):** The description does not mention that auto-creation of an index is disabled since Spring Data MongoDB 3.0. Therefore, index creation is handled programmatically by the main classes `ProductServiceApplication` and `RecommendationServiceApplication`.
+For example, see the method [initIndicesAfterStartup](https://github.com/PacktPublishing/Hands-On-Microservices-with-Spring-Boot-and-Spring-Cloud/blob/191f93f56f0d58eae4227a1952c73b4b10e8bac0/Chapter06/microservices/product-service/src/main/java/se/magnus/microservices/core/product/ProductServiceApplication.java#L39-L47) in the `ProductServiceApplication` class.
+
+  For more information, see:
+  * [What’s New in Spring Data MongoDB 3.0](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#new-features.3.0)
+  * [Spring Data MongoDB - Index Creation](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mapping.index-creation)
