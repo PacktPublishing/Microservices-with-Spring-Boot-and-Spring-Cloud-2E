@@ -3,9 +3,10 @@ package se.magnus.microservices.core.review;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 public abstract class MySqlTestBase {
-  private static MySQLContainer database = new MySQLContainer("mysql:5.7.32");
+  private static MySQLContainer database = new MySQLContainer(DockerImageName.parse("mariadb:10.7.1").asCompatibleSubstituteFor("mysql"));
 
   static {
     database.start();
