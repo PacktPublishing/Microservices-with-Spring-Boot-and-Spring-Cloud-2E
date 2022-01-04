@@ -47,6 +47,7 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:mysql'
+    testImplementation 'net.java.dev.jna:jna-platform:5.8.0'
 }
 
 dependencyManagement {
