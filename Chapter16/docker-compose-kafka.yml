@@ -112,7 +112,7 @@ services:
       retries: 60
 
   mysql:
-    image: mysql:5.7.32
+    image: mariadb:10.7.1
     mem_limit: 512m
     ports:
       - "3306:3306"
