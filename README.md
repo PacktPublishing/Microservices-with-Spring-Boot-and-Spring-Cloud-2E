@@ -1,6 +1,10 @@
-# Microservices-with-Spring-Boot-and-Spring-Cloud-2E
-Microservices-with-Spring-Boot-and-Spring-Cloud-2E, Published by Packt
+# Microservices with Spring Boot and Spring Cloud, Second Edition 
 
+<a href="https://www.packtpub.com/product/microservices-with-spring-boot-and-spring-cloud-second-edition/9781801072977"><img src="https://static.packt-cdn.com/products/9781801072977/cover/normal" alt="Microservices with Spring Boot and Spring Cloud, Second Edition" height="256px" align="right"></a>
+
+This is the code repository for [Microservices with Spring Boot and Spring Cloud, Second Edition](https://www.packtpub.com/product/microservices-with-spring-boot-and-spring-cloud-second-edition/9781801072977), published by Packt.
+
+**Build resilient and scalable microservices using Spring Cloud, Istio, and Kubernetes**
 ## About the book
 
 With this book, you'll learn how to efficiently build and deploy microservices. This new edition has been updated for the most recent versions of Spring, Java, Kubernetes, and Istio, demonstrating faster and simpler handling of Spring Boot, local Kubernetes clusters, and Istio installation. The expanded scope includes native compilation of Spring-based microservices, support for Mac and Windows with WSL2, and an introduction to Helm 3 for packaging and deployment. A revamped security chapter now follows the OAuth 2.1 specification and makes use of the newly launched Spring Authorization Server from the Spring team.
