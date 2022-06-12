@@ -35,3 +35,5 @@ For example, see the method [initIndicesAfterStartup](https://github.com/PacktPu
   For more information, see:
   * [What’s New in Spring Data MongoDB 3.0](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#new-features.3.0)
   * [Spring Data MongoDB - Index Creation](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mapping.index-creation)
+
+* **Page 153 (Testcontainers for MongoDB):** *The sentence* **For the `product` and `review` microservices, which use MongoDB, a corresponding base class, `MongoDbTestBase`, has been added** *should be* **For the `product` and `recommendation` microservices, which use MongoDB, a corresponding base class, `MongoDbTestBase`, has been added**.
