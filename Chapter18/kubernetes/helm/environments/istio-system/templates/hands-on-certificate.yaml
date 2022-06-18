@@ -22,7 +22,7 @@ spec:
     - my-address
   dnsNames:
   - minikube.me
-  - health.minikube.m
+  - health.minikube.me
   - dashboard.minikube.me
   - kiali.minikube.me
   - tracing.minikube.me
