@@ -11,7 +11,6 @@ import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 import static se.magnus.microservices.composite.product.IsSameEvent.sameEventExceptCreatedAt;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,11 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.binder.test.OutputDestination;
-import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.Message;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.composite.product.ProductAggregate;
 import se.magnus.api.composite.product.RecommendationSummary;
@@ -32,6 +27,7 @@ import se.magnus.api.core.product.Product;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.core.review.Review;
 import se.magnus.api.event.Event;
+import se.magnus.api.exceptions.EventProcessingException;
 
 @SpringBootTest(
   webEnvironment = RANDOM_PORT,
@@ -39,9 +35,8 @@ import se.magnus.api.event.Event;
   properties = {
     "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
     "spring.main.allow-bean-definition-overriding=true",
-    "spring.cloud.stream.defaultBinder=rabbit"})
-@Import({TestChannelBinderConfiguration.class})
-class MessagingTests {
+    "spring.cloud.function.definition=productMessageProcessor;recommendationMessageProcessor;reviewMessageProcessor"})
+public class MessagingTests extends KafkaTestBase {
 
   private static final Logger LOG = LoggerFactory.getLogger(MessagingTests.class);
 
@@ -49,7 +44,7 @@ class MessagingTests {
   private WebTestClient client;
 
   @Autowired
-  private OutputDestination target;
+  private MessageTestConsumerConfig testConsumer;
 
   @BeforeEach
   void setUp() {
@@ -63,6 +58,8 @@ class MessagingTests {
 
     ProductAggregate composite = new ProductAggregate(1, "name", 1, null, null, null);
     postAndVerifyProduct(composite, ACCEPTED);
+
+    waitForMessageProcessing();
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
@@ -87,6 +84,8 @@ class MessagingTests {
       singletonList(new RecommendationSummary(1, "a", 1, "c")),
       singletonList(new ReviewSummary(1, "a", "s", "c")), null);
     postAndVerifyProduct(composite, ACCEPTED);
+
+    waitForMessageProcessing();
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
@@ -121,6 +120,8 @@ class MessagingTests {
   void deleteCompositeProduct() {
     deleteAndVerifyProduct(1, ACCEPTED);
 
+    waitForMessageProcessing();
+
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
@@ -144,35 +145,12 @@ class MessagingTests {
     assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedReviewEvent)));
   }
 
-  private void purgeMessages(String bindingName) {
-    getMessages(bindingName);
-  }
-
-  private List<String> getMessages(String bindingName) {
-    List<String> messages = new ArrayList<>();
-    boolean anyMoreMessages = true;
-
-    while (anyMoreMessages) {
-      Message<byte[]> message = getMessage(bindingName);
-
-      if (message == null) {
-        anyMoreMessages = false;
-
-      } else {
-        messages.add(new String(message.getPayload()));
-      }
-    }
-    return messages;
-  }
-
-  private Message<byte[]> getMessage(String bindingName) {
+  private void waitForMessageProcessing() {
+    // Give Kafka some time to pass the messages to the MessageTestConsumer...
     try {
-      return target.receive(0, bindingName);
-    } catch (NullPointerException npe) {
-      // If the messageQueues member variable in the target object contains no queues when the receive method is called, it will cause a NPE to be thrown.
-      // So we catch the NPE here and return null to indicate that no messages were found.
-      LOG.error("getMessage() received a NPE with binding = {}", bindingName);
-      return null;
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      LOG.debug("Sleep interrupted...");
     }
   }
 
@@ -189,5 +167,35 @@ class MessagingTests {
       .uri("/product-composite/" + productId)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus);
+  }
+
+  private void purgeMessages(String bindingName) {
+    getMessages(bindingName);
+  }
+
+  private List<String> getMessages(String bindingName) {
+
+    List<String> messages;
+
+    switch (bindingName) {
+
+      case "products":
+        messages = testConsumer.getAndRemoveProductMessages();
+        break;
+
+      case "recommendations":
+        messages = testConsumer.getAndRemoveRecommendationMessages();
+        break;
+
+      case "reviews":
+        messages = testConsumer.getAndRemoveReviewMessages();
+        break;
+
+      default:
+        String errorMessage = "Incorrect binding name: " + bindingName;
+        LOG.warn(errorMessage);
+        throw new EventProcessingException(errorMessage);
+    }
+    return messages;
   }
 }

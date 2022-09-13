@@ -7,13 +7,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
-import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandlingException;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.event.Event;
@@ -21,17 +23,16 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.sleuth.mongodb.enabled=false"})
-class ProductServiceApplicationTests extends MongoDbTestBase {
+class ProductServiceApplicationTests extends MongoDbKafkaTestBase {
+
+  @Autowired
+  private StreamBridge streamBridge;
 
   @Autowired
   private WebTestClient client;
 
   @Autowired
   private ProductRepository repository;
-
-  @Autowired
-  @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Product>> messageProcessor;
 
   @BeforeEach
   void setupDb() {
@@ -66,11 +67,12 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
 
     assertNotNull(repository.findByProductId(productId).block());
 
-    InvalidInputException thrown = assertThrows(
-      InvalidInputException.class,
+    MessageHandlingException thrown = assertThrows(
+      MessageHandlingException.class,
       () -> sendCreateProductEvent(productId),
       "Expected a InvalidInputException here!");
-    assertEquals("Duplicate key, Product Id: " + productId, thrown.getMessage());
+    InvalidInputException cause = (InvalidInputException)thrown.getCause();
+    assertEquals("Duplicate key, Product Id: " + productId, cause.getMessage());
   }
 
   @Test
@@ -131,11 +133,19 @@ class ProductServiceApplicationTests extends MongoDbTestBase {
   private void sendCreateProductEvent(int productId) {
     Product product = new Product(productId, "Name " + productId, productId, "SA");
     Event<Integer, Product> event = new Event(CREATE, productId, product);
-    messageProcessor.accept(event);
+    sendMessage(event);
   }
 
   private void sendDeleteProductEvent(int productId) {
     Event<Integer, Product> event = new Event(DELETE, productId, null);
-    messageProcessor.accept(event);
+    sendMessage(event);
+  }
+
+  private void sendMessage(Event event) {
+    String bindingName = "messageProcessor-in-0";
+    Message message = MessageBuilder.withPayload(event)
+      .setHeader("partitionKey", event.getKey())
+      .build();
+    streamBridge.send(bindingName, message);
   }
 }

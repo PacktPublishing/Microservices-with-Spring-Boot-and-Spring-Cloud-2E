@@ -1,9 +1,9 @@
-FROM adoptopenjdk:16_36-jre-hotspot as builder
+FROM eclipse-temurin:17.0.4_8-jre-focal as builder
 WORKDIR extracted
 ADD ./build/libs/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM adoptopenjdk:16_36-jre-hotspot
+FROM eclipse-temurin:17.0.4_8-jre-focal
 WORKDIR application
 COPY --from=builder extracted/dependencies/ ./
 COPY --from=builder extracted/spring-boot-loader/ ./

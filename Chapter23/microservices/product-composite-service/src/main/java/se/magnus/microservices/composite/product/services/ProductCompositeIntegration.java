@@ -6,10 +6,10 @@ import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+//import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+//import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+//import io.github.resilience4j.retry.annotation.Retry;
+//import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import java.io.IOException;
 import java.net.URI;
 import org.slf4j.Logger;
@@ -81,9 +81,9 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  @Retry(name = "product")
-  @TimeLimiter(name = "product")
-  @CircuitBreaker(name = "product", fallbackMethod = "getProductFallbackValue")
+  //  @Retry(name = "product")
+  //  @TimeLimiter(name = "product")
+  //  @CircuitBreaker(name = "product", fallbackMethod = "getProductFallbackValue")
   public Mono<Product> getProduct(HttpHeaders headers, int productId, int delay, int faultPercent) {
 
     URI url = UriComponentsBuilder.fromUriString(PRODUCT_SERVICE_URL
@@ -96,23 +96,23 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
       .onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
   }
 
-  private Mono<Product> getProductFallbackValue(HttpHeaders headers, int productId, int delay, int faultPercent, CallNotPermittedException ex) {
-
-    LOG.warn("Creating a fail-fast fallback product for productId = {}, delay = {}, faultPercent = {} and exception = {} ",
-      productId, delay, faultPercent, ex.toString());
-
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
-    }
-
-    if (productId == 13) {
-      String errMsg = "Product Id: " + productId + " not found in fallback cache!";
-      LOG.warn(errMsg);
-      throw new NotFoundException(errMsg);
-    }
-
-    return Mono.just(new Product(productId, "Fallback product" + productId, productId, serviceUtil.getServiceAddress()));
-  }
+  //  private Mono<Product> getProductFallbackValue(HttpHeaders headers, int productId, int delay, int faultPercent, CallNotPermittedException ex) {
+  //
+  //    LOG.warn("Creating a fail-fast fallback product for productId = {}, delay = {}, faultPercent = {} and exception = {} ",
+  //      productId, delay, faultPercent, ex.toString());
+  //
+  //    if (productId < 1) {
+  //      throw new InvalidInputException("Invalid productId: " + productId);
+  //    }
+  //
+  //    if (productId == 13) {
+  //      String errMsg = "Product Id: " + productId + " not found in fallback cache!";
+  //      LOG.warn(errMsg);
+  //      throw new NotFoundException(errMsg);
+  //    }
+  //
+  //    return Mono.just(new Product(productId, "Fallback product" + productId, productId, serviceUtil.getServiceAddress()));
+  //  }
 
   @Override
   public Mono<Void> deleteProduct(int productId) {

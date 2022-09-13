@@ -21,3 +21,14 @@ spring.cloud.stream:
     products-out-0.destination: products
     recommendations-out-0.destination: recommendations
     reviews-out-0.destination: reviews
+
+    productMessageProcessor-in-0.destination: products
+    recommendationMessageProcessor-in-0.destination: recommendations
+    reviewMessageProcessor-in-0.destination: reviews
+
+logging:
+  level:
+    org.apache.kafka.clients:
+      admin.AdminClientConfig: WARN
+      consumer.ConsumerConfig: WARN
+      producer.ProducerConfig: WARN

@@ -12,7 +12,7 @@ import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
-class PersistenceTests extends MongoDbTestBase {
+class PersistenceTests extends MongoDbKafkaTestBase {
 
   @Autowired
   private ProductRepository repository;

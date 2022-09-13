@@ -1,11 +1,11 @@
 package se.magnus.microservices.composite.product;
 
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
-import io.swagger.v3.oas.models.ExternalDocumentation;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
+//import io.swagger.v3.oas.models.ExternalDocumentation;
+//import io.swagger.v3.oas.models.OpenAPI;
+//import io.swagger.v3.oas.models.info.Contact;
+//import io.swagger.v3.oas.models.info.Info;
+//import io.swagger.v3.oas.models.info.License;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.SpringProxy;
@@ -19,10 +19,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.DecoratingProxy;
 import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.nativex.hint.AotProxyHint;
-import org.springframework.nativex.hint.FieldHint;
-import org.springframework.nativex.hint.JdkProxyHint;
-import org.springframework.nativex.hint.TypeHint;
+import org.springframework.nativex.hint.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.*;
@@ -40,120 +37,46 @@ import se.magnus.api.core.recommendation.RecommendationService;
 import se.magnus.api.core.review.Review;
 import se.magnus.api.core.review.ReviewService;
 import se.magnus.api.event.Event;
+import se.magnus.api.exceptions.BadRequestException;
+import se.magnus.api.exceptions.EventProcessingException;
+import se.magnus.api.exceptions.InvalidInputException;
+import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 import se.magnus.util.http.HttpErrorInfo;
 
-@TypeHint(types = Product.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "name", allowWrite = true),
-  @FieldHint(name = "weight", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
+@TypeHint(types = {
+  Product.class,
+  Recommendation.class,
+  Review.class,
+  ProductAggregate.class,
+  RecommendationSummary.class,
+  ReviewSummary.class,
+  ServiceAddresses.class,
+  HttpErrorInfo.class,
+  BadRequestException.class,
+  EventProcessingException.class,
+  InvalidInputException.class,
+  NotFoundException.class,
+  GenericMessage.class,
+  Event.class,
+  ZonedDateTimeSerializer.class,
+  OptionalValidatorFactoryBean.class},
+  access = { TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.PUBLIC_METHODS }
+)
+
+@TypeHint(typeNames = "org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration$KafkaBinderMetricsConfiguration")
+
+@JdkProxyHint(types = {
+  RestController.class,
+  Controller.class,
+  GetMapping.class,
+  PostMapping.class,
+  DeleteMapping.class,
+  RequestParam.class,
+  RequestHeader.class,
+  PathVariable.class,
+  SynthesizedAnnotation.class
 })
-
-@TypeHint(types = Recommendation.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "recommendationId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "rate", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
-})
-
-@TypeHint(types = Review.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "reviewId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "subject", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
-})
-
-@TypeHint(types = Product.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "name", allowWrite = true),
-  @FieldHint(name = "weight", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
-})
-
-@TypeHint(types = Recommendation.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "recommendationId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "rate", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
-})
-
-@TypeHint(types = Review.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "reviewId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "subject", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true),
-  @FieldHint(name = "serviceAddress", allowWrite = true)
-})
-
-@TypeHint(types = ProductAggregate.class, fields = {
-  @FieldHint(name = "productId", allowWrite = true),
-  @FieldHint(name = "name", allowWrite = true),
-  @FieldHint(name = "weight", allowWrite = true),
-  @FieldHint(name = "recommendations", allowWrite = true),
-  @FieldHint(name = "reviews", allowWrite = true),
-  @FieldHint(name = "serviceAddresses", allowWrite = true)
-})
-
-@TypeHint(types = RecommendationSummary.class, fields = {
-  @FieldHint(name = "recommendationId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "rate", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true)
-})
-
-@TypeHint(types = ReviewSummary.class, fields = {
-  @FieldHint(name = "reviewId", allowWrite = true),
-  @FieldHint(name = "author", allowWrite = true),
-  @FieldHint(name = "subject", allowWrite = true),
-  @FieldHint(name = "content", allowWrite = true)
-})
-
-@TypeHint(types = ServiceAddresses.class, fields = {
-  @FieldHint(name = "cmp", allowWrite = true),
-  @FieldHint(name = "pro", allowWrite = true),
-  @FieldHint(name = "rev", allowWrite = true),
-  @FieldHint(name = "rec", allowWrite = true)
-})
-
-@TypeHint(types = HttpErrorInfo.class, fields = {
-  @FieldHint(name = "timestamp", allowWrite = true),
-  @FieldHint(name = "path", allowWrite = true),
-  @FieldHint(name = "httpStatus", allowWrite = true),
-  @FieldHint(name = "message", allowWrite = true)
-})
-
-@TypeHint(types = GenericMessage.class, fields = {
-  @FieldHint(name = "headers", allowWrite = true),
-  @FieldHint(name = "payload", allowWrite = true),
-})
-
-@TypeHint(types = Event.class, fields = {
-  @FieldHint(name = "eventType", allowWrite = true),
-  @FieldHint(name = "key", allowWrite = true),
-  @FieldHint(name = "data", allowWrite = true),
-  @FieldHint(name = "eventCreatedAt", allowWrite = true)
-})
-
-@TypeHint(types = ZonedDateTimeSerializer.class)
-
-@TypeHint(types = OptionalValidatorFactoryBean.class)
-
-@JdkProxyHint(types = { RestController.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { Controller.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { GetMapping.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { PostMapping.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { DeleteMapping.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { RequestParam.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { RequestHeader.class, SynthesizedAnnotation.class })
-@JdkProxyHint(types = { PathVariable.class, SynthesizedAnnotation.class })
 
 @AotProxyHint(targetClass = ProductCompositeIntegration.class, interfaces = {
   ProductService.class,
@@ -187,24 +110,24 @@ public class ProductCompositeServiceApplication {
   *
   * @return the common OpenAPI documentation
   */
-  @Bean
-  public OpenAPI getOpenApiDocumentation() {
-    return new OpenAPI()
-      .info(new Info().title(apiTitle)
-        .description(apiDescription)
-        .version(apiVersion)
-        .contact(new Contact()
-          .name(apiContactName)
-          .url(apiContactUrl)
-          .email(apiContactEmail))
-        .termsOfService(apiTermsOfService)
-        .license(new License()
-          .name(apiLicense)
-          .url(apiLicenseUrl)))
-      .externalDocs(new ExternalDocumentation()
-        .description(apiExternalDocDesc)
-        .url(apiExternalDocUrl));
-  }
+  //  @Bean
+  //  public OpenAPI getOpenApiDocumentation() {
+  //    return new OpenAPI()
+  //      .info(new Info().title(apiTitle)
+  //        .description(apiDescription)
+  //        .version(apiVersion)
+  //        .contact(new Contact()
+  //          .name(apiContactName)
+  //          .url(apiContactUrl)
+  //          .email(apiContactEmail))
+  //        .termsOfService(apiTermsOfService)
+  //        .license(new License()
+  //          .name(apiLicense)
+  //          .url(apiLicenseUrl)))
+  //      .externalDocs(new ExternalDocumentation()
+  //        .description(apiExternalDocDesc)
+  //        .url(apiExternalDocUrl));
+  //  }
 
   private final Integer threadPoolSize;
   private final Integer taskQueueSize;
@@ -230,6 +153,7 @@ public class ProductCompositeServiceApplication {
   }
 
   public static void main(String[] args) {
+    LOG.info("Starts up with support for Resilience4j and OpenApi disabled!");
     SpringApplication.run(ProductCompositeServiceApplication.class, args);
   }
 

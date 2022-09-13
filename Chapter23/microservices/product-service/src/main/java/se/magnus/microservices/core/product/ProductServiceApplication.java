@@ -1,10 +1,15 @@
 package se.magnus.microservices.core.product;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.binder.kafka.properties.KafkaBindingProperties;
+import org.springframework.cloud.stream.binder.kafka.properties.KafkaConsumerProperties;
+import org.springframework.cloud.stream.binder.kafka.properties.KafkaExtendedBindingProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -17,6 +22,7 @@ import org.springframework.data.mongodb.core.index.ReactiveIndexOperations;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
 import org.springframework.nativex.hint.FieldHint;
+import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 import se.magnus.api.event.Event;
@@ -29,6 +35,18 @@ import se.magnus.microservices.core.product.persistence.ProductEntity;
   @FieldHint(name = "data", allowWrite = true),
   @FieldHint(name = "eventCreatedAt", allowWrite = true)
 })
+
+@TypeHint(types = {
+  Map.class,
+  LinkedHashMap.class,
+  KafkaBindingProperties.class,
+  KafkaExtendedBindingProperties.class,
+  KafkaConsumerProperties.class},
+  access = { TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.PUBLIC_METHODS }
+)
+
+@TypeHint(typeNames = "org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration$KafkaBinderMetricsConfiguration")
+
 @SpringBootApplication
 @ComponentScan("se.magnus")
 public class ProductServiceApplication {

@@ -7,13 +7,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
-import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandlingException;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.review.Review;
 import se.magnus.api.event.Event;
@@ -23,17 +25,16 @@ import se.magnus.microservices.core.review.persistence.ReviewRepository;
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
   "logging.level.se.magnus=DEBUG",
   "spring.jpa.hibernate.ddl-auto=update"})
-class ReviewServiceApplicationTests extends MySqlTestBase {
+class ReviewServiceApplicationTests extends MySqlKafkaTestBase {
+
+  @Autowired
+  private StreamBridge streamBridge;
 
   @Autowired
   private WebTestClient client;
 
   @Autowired
   private ReviewRepository repository;
-
-  @Autowired
-  @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Review>> messageProcessor;
 
   @BeforeEach
   void setupDb() {
@@ -71,11 +72,12 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
 
     assertEquals(1, repository.count());
 
-    InvalidInputException thrown = assertThrows(
-      InvalidInputException.class,
+    MessageHandlingException thrown = assertThrows(
+      MessageHandlingException.class,
       () -> sendCreateReviewEvent(productId, reviewId),
       "Expected a InvalidInputException here!");
-    assertEquals("Duplicate key, Product Id: 1, Review Id:1", thrown.getMessage());
+    InvalidInputException cause = (InvalidInputException)thrown.getCause();
+    assertEquals("Duplicate key, Product Id: 1, Review Id:1", cause.getMessage());
 
     assertEquals(1, repository.count());
   }
@@ -145,11 +147,19 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
   private void sendCreateReviewEvent(int productId, int reviewId) {
     Review review = new Review(productId, reviewId, "Author " + reviewId, "Subject " + reviewId, "Content " + reviewId, "SA");
     Event<Integer, Review> event = new Event(CREATE, productId, review);
-    messageProcessor.accept(event);
+    sendMessage(event);
   }
 
   private void sendDeleteReviewEvent(int productId) {
     Event<Integer, Review> event = new Event(DELETE, productId, null);
-    messageProcessor.accept(event);
+    sendMessage(event);
+  }
+
+  private void sendMessage(Event event) {
+    String bindingName = "messageProcessor-in-0";
+    Message message = MessageBuilder.withPayload(event)
+      .setHeader("partitionKey", event.getKey())
+      .build();
+    streamBridge.send(bindingName, message);
   }
 }

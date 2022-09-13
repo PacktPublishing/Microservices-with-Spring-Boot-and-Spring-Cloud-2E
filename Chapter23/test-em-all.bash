@@ -304,14 +304,27 @@ READER_AUTH="-H \"Authorization: Bearer $READER_ACCESS_TOKEN\""
 assertCurl 200 "curl $READER_AUTH -k https://$HOST:$PORT/product-composite/$PROD_ID_REVS_RECS -s"
 assertCurl 403 "curl -X DELETE $READER_AUTH -k https://$HOST:$PORT/product-composite/$PROD_ID_REVS_RECS -s"
 
+if [[ $USE_K8S == "true" ]]
+then
+  # Verify access to Prometheus formatted metrics
+  echo "Prometheus metrics tests"
+  assertCurl 200 "curl -ks https://health.minikube.me/actuator/prometheus"
+fi
+
 # Verify access to Swagger and OpenAPI URLs
 echo "Swagger/OpenAPI tests"
-assertCurl 302 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
-assertCurl 200 "curl -ksL https://$HOST:$PORT/openapi/swagger-ui.html"
-assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/webjars/swagger-ui/3.49.0/index.html?configUrl=/openapi/v3/api-docs/swagger-config"
-assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs"
-assertEqual "3.0.1" "$(echo $RESPONSE | jq -r .openapi)"
-assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs.yaml"
+#assertCurl 302 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
+#assertCurl 200 "curl -ksL https://$HOST:$PORT/openapi/swagger-ui.html"
+#assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/webjars/swagger-ui/3.49.0/index.html?configUrl=/openapi/v3/api-docs/swagger-config"
+#assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs"
+#assertEqual "3.0.1" "$(echo $RESPONSE | jq -r .openapi)"
+#assertCurl 200 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs.yaml"
+
+assertCurl 404 "curl -ks  https://$HOST:$PORT/openapi/swagger-ui.html"
+assertCurl 404 "curl -ksL https://$HOST:$PORT/openapi/swagger-ui.html"
+assertCurl 404 "curl -ks  https://$HOST:$PORT/openapi/webjars/swagger-ui/3.49.0/index.html?configUrl=/openapi/v3/api-docs/swagger-config"
+assertCurl 404 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs"
+assertCurl 404 "curl -ks  https://$HOST:$PORT/openapi/v3/api-docs.yaml"
 
 if [[ $SKIP_CB_TESTS == "false" ]]
 then

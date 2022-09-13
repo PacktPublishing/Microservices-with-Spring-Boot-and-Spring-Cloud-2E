@@ -7,13 +7,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
-import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandlingException;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.event.Event;
@@ -21,17 +23,16 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.sleuth.mongodb.enabled=false"})
-class RecommendationServiceApplicationTests extends MongoDbTestBase {
+class RecommendationServiceApplicationTests extends MongoDbKafkaTestBase {
+
+  @Autowired
+  private StreamBridge streamBridge;
 
   @Autowired
   private WebTestClient client;
 
   @Autowired
   private RecommendationRepository repository;
-
-  @Autowired
-  @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Recommendation>> messageProcessor;
 
   @BeforeEach
   void setupDb() {
@@ -65,11 +66,12 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
     assertEquals(1, (long)repository.count().block());
 
-    InvalidInputException thrown = assertThrows(
-      InvalidInputException.class,
+    MessageHandlingException thrown = assertThrows(
+      MessageHandlingException.class,
       () -> sendCreateRecommendationEvent(productId, recommendationId),
       "Expected a InvalidInputException here!");
-    assertEquals("Duplicate key, Product Id: 1, Recommendation Id:1", thrown.getMessage());
+    InvalidInputException cause = (InvalidInputException)thrown.getCause();
+    assertEquals("Duplicate key, Product Id: 1, Recommendation Id:1", cause.getMessage());
 
     assertEquals(1, (long)repository.count().block());
   }
@@ -139,11 +141,19 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
   private void sendCreateRecommendationEvent(int productId, int recommendationId) {
     Recommendation recommendation = new Recommendation(productId, recommendationId, "Author " + recommendationId, recommendationId, "Content " + recommendationId, "SA");
     Event<Integer, Recommendation> event = new Event(CREATE, productId, recommendation);
-    messageProcessor.accept(event);
+    sendMessage(event);
   }
 
   private void sendDeleteRecommendationEvent(int productId) {
     Event<Integer, Recommendation> event = new Event(DELETE, productId, null);
-    messageProcessor.accept(event);
+    sendMessage(event);
+  }
+
+  private void sendMessage(Event event) {
+    String bindingName = "messageProcessor-in-0";
+    Message message = MessageBuilder.withPayload(event)
+      .setHeader("partitionKey", event.getKey())
+      .build();
+    streamBridge.send(bindingName, message);
   }
 }

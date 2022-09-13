@@ -20,7 +20,7 @@ import se.magnus.microservices.core.review.persistence.ReviewRepository;
 @DataJpaTest(properties = {"spring.jpa.hibernate.ddl-auto=update"})
 @Transactional(propagation = NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PersistenceTests extends MySqlTestBase {
+class PersistenceTests extends MySqlKafkaTestBase {
 
   @Autowired
   private ReviewRepository repository;
