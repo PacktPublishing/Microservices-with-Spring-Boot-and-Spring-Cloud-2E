@@ -24,6 +24,13 @@ By the end of this book, you'll be confident in building microservices that are 
 6. Apply Istio for improved security, observability, and traffic management
 7. Write and run automated microservice tests with JUnit, testcontainers, Gradle, and bash
 
+## Try out new versions
+
+If you want to try out the source code of this book with newer versions of Spring, Java, Kubernetes, and Istio than used in the book, you can take a look at the following blog posts:
+
+1. [Upgrade to Spring Boot 2.7 and Spring Native 0.12](https://callistaenterprise.se/blogg/teknik/2022/09/19/microservices-upgrade-SB2.7-SN0.12/) (published 19 September 2022)
+
+
 ## Errata
 * **Page 147 (Defining index for MongoDB):** The description does not mention that auto-creation of an index is disabled since Spring Data MongoDB 3.0. Therefore, index creation is handled programmatically by the main classes `ProductServiceApplication` and `RecommendationServiceApplication`.
 For example, see the method [initIndicesAfterStartup](https://github.com/PacktPublishing/Hands-On-Microservices-with-Spring-Boot-and-Spring-Cloud/blob/191f93f56f0d58eae4227a1952c73b4b10e8bac0/Chapter06/microservices/product-service/src/main/java/se/magnus/microservices/core/product/ProductServiceApplication.java#L39-L47) in the `ProductServiceApplication` class.
