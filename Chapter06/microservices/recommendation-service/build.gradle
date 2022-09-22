@@ -39,6 +39,9 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:mongodb'
+
+    // If you're using Mac M1 chip machine, you should add this dependency, otherwise, unit test will fail.
+    testImplementation 'net.java.dev.jna:jna-platform:5.8.0'
 }
 
 test {
