@@ -1,3 +1,4 @@
+> **This Git branch, `SB2.7`, is used by the blog post [Upgrade to Spring Boot 2.7 and Spring Native 0.12](https://callistaenterprise.se/blogg/teknik/2022/09/19/microservices-upgrade-SB2.7-SN0.12/)**
 # Microservices with Spring Boot and Spring Cloud, Second Edition 
 
 <a href="https://www.packtpub.com/product/microservices-with-spring-boot-and-spring-cloud-second-edition/9781801072977"><img src="https://static.packt-cdn.com/products/9781801072977/cover/normal" alt="Microservices with Spring Boot and Spring Cloud, Second Edition" height="256px" align="right"></a>
@@ -29,6 +30,8 @@ By the end of this book, you'll be confident in building microservices that are 
 If you want to try out the source code of this book with newer versions of Spring, Java, Kubernetes, and Istio than used in the book, you can take a look at the following blog posts:
 
 1. [Upgrade to Spring Boot 2.7 and Spring Native 0.12](https://callistaenterprise.se/blogg/teknik/2022/09/19/microservices-upgrade-SB2.7-SN0.12/) (published 19 September 2022)
+   
+2. [Upgrade to Kubernetes 1.25 and Istio 1.15](https://callistaenterprise.se/blogg/teknik/2022/10/04/microservices-upgrade-K8S1.25-Istio1.15/) (published 4 October 2022)
 
 
 ## Errata
