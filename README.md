@@ -42,3 +42,7 @@ For example, see the method [initIndicesAfterStartup](https://github.com/PacktPu
   * [Spring Data MongoDB - Index Creation](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mapping.index-creation)
 
 * **Page 153 (Testcontainers for MongoDB):** *The sentence* **For the `product` and `review` microservices, which use MongoDB, a corresponding base class, `MongoDbTestBase`, has been added** *should be* **For the `product` and `recommendation` microservices, which use MongoDB, a corresponding base class, `MongoDbTestBase`, has been added**.
+### Download a free PDF
+
+ <i>If you have already purchased a print or Kindle version of this book, you can get a DRM-free PDF version at no cost.<br>Simply click on the link to claim your free PDF.</i>
+<p align="center"> <a href="https://packt.link/free-ebook/9781801072977">https://packt.link/free-ebook/9781801072977 </a> </p>
