@@ -138,7 +138,7 @@ services:
       retries: 60
 
   mysql:
-    image: mysql:5.7.32
+    image: mysql:8.0.30
     mem_limit: 512m
     ports:
       - "3306:3306"
@@ -154,24 +154,27 @@ services:
       retries: 60
 
   kafka:
-    image: wurstmeister/kafka:2.12-2.5.0
-    mem_limit: 512m
+    image: confluentinc/cp-kafka:7.2.1
+    restart: always
+    mem_limit: 1024m
     ports:
       - "9092:9092"
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME=kafka
-      - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_BROKER_ID=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     depends_on:
       - zookeeper
 
   zookeeper:
-    image: wurstmeister/zookeeper:3.4.6
+    image: confluentinc/cp-zookeeper:7.2.1
+    restart: always
     mem_limit: 512m
     ports:
       - "2181:2181"
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME=zookeeper
+      - ZOOKEEPER_CLIENT_PORT=2181
 
   gateway:
     build: spring-cloud/gateway

@@ -32,6 +32,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
     implementation 'org.springframework.retry:spring-retry'
 
+    // See https://github.com/netty/netty/issues/11693
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

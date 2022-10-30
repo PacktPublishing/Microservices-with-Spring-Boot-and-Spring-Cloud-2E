@@ -1,0 +1,59 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for native compiled HANDS-ON MICROSERVICES WITH SPRING BOOT AND SPRING CLOUD running in a Dev and Test Environment
+name: dev-env-native
+version: 1.0.0
+
+dependencies:
+
+  - name: common
+    version: 1.0.0
+    repository: file://../../common
+
+  - name: zookeeper
+    version: 1.0.0
+    repository: file://../../components/zookeeper
+
+  - name: kafka
+    version: 1.0.0
+    repository: file://../../components/kafka
+
+  - name: mongodb
+    version: 1.0.0
+    repository: file://../../components/mongodb
+
+  - name: mysql
+    version: 1.0.0
+    repository: file://../../components/mysql
+
+  - name: auth-server
+    version: 1.0.0
+    repository: file://../../components/auth-server
+
+  - name: product
+    version: 1.0.0
+    repository: file://../../components/product
+
+  - name: product-green
+    version: 1.0.0
+    repository: file://../../components/product-green
+
+  - name: recommendation
+    version: 1.0.0
+    repository: file://../../components/recommendation
+
+  - name: recommendation-green
+    version: 1.0.0
+    repository: file://../../components/recommendation-green
+
+  - name: review
+    version: 1.0.0
+    repository: file://../../components/review
+
+  - name: review-green
+    version: 1.0.0
+    repository: file://../../components/review-green
+
+  - name: product-composite
+    version: 1.0.0
+    repository: file://../../components/product-composite

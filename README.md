@@ -1,4 +1,4 @@
-> **This Git branch, `K8S1.25`, is used by the blog post [Upgrade to Kubernetes 1.25 and Istio 1.15](https://callistaenterprise.se/blogg/teknik/2022/10/04/microservices-upgrade-K8S1.25-Istio1.15/).**
+> **This Git branch, `ARM64-AppleSilicon`, is used by the blog post [Develop, build and deploy microservices on Apple silicon (ARM64)](https://callistaenterprise.se/blogg/teknik/2022/11/02/2022-11-02-microservices-on-apple-silicon/).**
 # Microservices with Spring Boot and Spring Cloud, Second Edition 
 
 <a href="https://www.packtpub.com/product/microservices-with-spring-boot-and-spring-cloud-second-edition/9781801072977"><img src="https://static.packt-cdn.com/products/9781801072977/cover/normal" alt="Microservices with Spring Boot and Spring Cloud, Second Edition" height="256px" align="right"></a>

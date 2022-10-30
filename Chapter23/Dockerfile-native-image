@@ -1,0 +1,57 @@
+#
+# Usage:
+#   docker build -f Dockerfile-native-image --build-arg SERVICE_NAME=product-composite-service -t hands-on/native-product-composite-service:latest .
+#
+# Add, as required:
+#   --progress=plain
+#   --no-cache
+#
+# Try out with:
+#   export name=product-composite
+#   docker build -f Dockerfile-native-image --progress=plain --build-arg SERVICE_NAME=$name-service -t hands-on/native-$name-service:latest .
+#   docker run --rm hands-on/native-$name-service
+#
+FROM ghcr.io/graalvm/graalvm-ce:ol8-java17-22.1.0 as builder
+
+# 1. Install the native compiler
+RUN gu install native-image
+
+WORKDIR "/app"
+
+# 2. Download the gradle distribution
+COPY gradlew ./
+COPY gradle/ gradle/
+RUN ./gradlew --version
+
+# 3. Resolve dependencies for the util and api projects
+COPY settings.gradle ./
+COPY api/settings.gradle api/build.gradle api/
+COPY util/settings.gradle util/build.gradle util/
+RUN ./gradlew :util:dependencies
+
+# Build argument for the name of the microserivce
+ARG SERVICE_NAME
+
+# 4. Resolve dependencies for the microservice
+COPY microservices/${SERVICE_NAME}/settings.gradle microservices/${SERVICE_NAME}/build.gradle microservices/${SERVICE_NAME}/
+RUN ./gradlew :microservices:${SERVICE_NAME}:dependencies
+
+# 5. Add the source code for api, util and the microserivce projects
+COPY api/src/  api/src/
+COPY util/src/ util/src/
+COPY microservices/${SERVICE_NAME}/src/ microservices/${SERVICE_NAME}/src/
+
+# 6. Run the GraalVM native compiler
+RUN ./gradlew :microservices:${SERVICE_NAME}:nativeCompile
+
+FROM gcr.io/distroless/base as runtime-distroless
+
+ARG SERVICE_NAME
+
+# Copy the native image and libz from the builder
+COPY --from=builder app/microservices/${SERVICE_NAME}/build/native/nativeCompile/${SERVICE_NAME} /application
+COPY --from=builder /lib64/libz.so.1 /lib/libz.so.1
+
+EXPOSE 8080
+
+ENTRYPOINT ["/application"]

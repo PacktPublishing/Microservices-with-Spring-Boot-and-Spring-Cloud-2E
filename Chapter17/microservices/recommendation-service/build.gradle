@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.springframework.retry:spring-retry'
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 
+    // See https://github.com/netty/netty/issues/11693
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
+
     compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
@@ -41,7 +44,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 
-    implementation platform('org.testcontainers:testcontainers-bom:1.15.2')
+    implementation platform('org.testcontainers:testcontainers-bom:1.16.2')
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:mongodb'

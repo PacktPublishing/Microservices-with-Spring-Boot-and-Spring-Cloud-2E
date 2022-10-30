@@ -3,13 +3,15 @@ fullnameOverride: mysql
 image:
   repository: registry.hub.docker.com/library
   name: mysql
-  tag: 5.7.32
+  tag: 8.0.30
   pullPolicy: IfNotPresent
-  args:
-    - "--ignore-db-dir=lost+found"
 
 ports:
   - containerPort: 3306
+
+resources:
+  limits:
+    memory: 512Mi
 
 service:
   ports:

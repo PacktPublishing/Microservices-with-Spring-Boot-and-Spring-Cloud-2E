@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.1.0'
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
+    // See https://github.com/netty/netty/issues/11693
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

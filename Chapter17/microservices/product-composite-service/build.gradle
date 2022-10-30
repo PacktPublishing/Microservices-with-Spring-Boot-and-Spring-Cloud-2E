@@ -37,6 +37,9 @@ dependencies {
     implementation "io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}"
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+    // See https://github.com/netty/netty/issues/11693
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-stream::test-binder'
     testImplementation 'io.projectreactor:reactor-test'
