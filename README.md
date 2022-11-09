@@ -33,6 +33,7 @@ If you want to try out the source code of this book with newer versions of Sprin
    
 2. [Upgrade to Kubernetes 1.25 and Istio 1.15](https://callistaenterprise.se/blogg/teknik/2022/10/04/microservices-upgrade-K8S1.25-Istio1.15/) (published 4 October 2022)
 
+3. [Develop, build and deploy microservices on Apple silicon (ARM64)](https://callistaenterprise.se/blogg/teknik/2022/11/02/microservices-on-apple-silicon/) (published 2 November 2022)
 
 ## Errata
 * **Page 147 (Defining index for MongoDB):** The description does not mention that auto-creation of an index is disabled since Spring Data MongoDB 3.0. Therefore, index creation is handled programmatically by the main classes `ProductServiceApplication` and `RecommendationServiceApplication`.
