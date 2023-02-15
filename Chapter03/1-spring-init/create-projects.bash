@@ -6,6 +6,7 @@ cd microservices
 spring init \
 --boot-version=2.5.2 \
 --build=gradle \
+--type=gradle-project \
 --java-version=1.8 \
 --packaging=jar \
 --name=product-service \
@@ -18,6 +19,7 @@ product-service
 spring init \
 --boot-version=2.5.2 \
 --build=gradle \
+--type=gradle-project \
 --java-version=1.8 \
 --packaging=jar \
 --name=review-service \
@@ -30,6 +32,7 @@ review-service
 spring init \
 --boot-version=2.5.2 \
 --build=gradle \
+--type=gradle-project \
 --java-version=1.8 \
 --packaging=jar \
 --name=recommendation-service \
@@ -42,6 +45,7 @@ recommendation-service
 spring init \
 --boot-version=2.5.2 \
 --build=gradle \
+--type=gradle-project \
 --java-version=1.8 \
 --packaging=jar \
 --name=product-composite-service \
